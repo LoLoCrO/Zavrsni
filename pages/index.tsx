@@ -1,11 +1,11 @@
 
-import { useAmp } from 'next/amp';
+import React from 'react';
+import LoginForm from '../components/loginForm';
 
-export const config = { amp: 'hybrid' };
-
-const Index = () => {
-    const isAmp = useAmp();
-    return <p>Welcome to the {isAmp ? 'AMP' : 'normal'} version of the Index page!!</p>;
-}
+const Index = () => <LoginForm
+    onSubmit={({ email, password }) => {
+        console.log(email, password)
+    }}
+/>
 
 export default Index;
