@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Formik, Form } from 'formik';
-import { Button, TextField, Paper, Typography } from '@material-ui/core';
+import {Formik, Form} from 'formik';
+import {Button, TextField, Paper, Typography} from '@material-ui/core';
 
 export interface LoginValues {
     email: string;
@@ -26,9 +26,8 @@ interface LoginFormProps {
 }
 
 const StyledPaper = styled(Paper)`
-   && {
-       margin-left: auto;
-        margin-right: auto;
+    && {
+        margin: auto;
         width: 30rem;
         height: 30rem;
     }     
@@ -53,7 +52,7 @@ const StyledTextField = styled(TextField)`
 `;
 
 const StyledButton = styled(Button)`
-  && {
+    && {
         margin-top: 2.5rem;
         margin-left: 12.5rem;
         margin-right: 12.5rem;
@@ -63,11 +62,11 @@ const StyledButton = styled(Button)`
     }
 `;
 
-const LoginForm: React.FunctionComponent<LoginFormProps> = ({ onSubmit }: LoginFormProps): JSX.Element => {
+const LoginForm: React.FunctionComponent<LoginFormProps> = ({onSubmit}: LoginFormProps): JSX.Element => {
 
-    const initialValues: LoginValues = { email: '', password: '' };
+    const initialValues: LoginValues = {email: '', password: ''};
 
-    const listTextFields = ({ values, handleChange, handleBlur }: TextFieldsProps): JSX.Element[] => {
+    const listTextFields = ({values, handleChange, handleBlur}: TextFieldsProps): JSX.Element[] => {
 
         const vals: string[] = Object.values(values);
         const labels: string[] = ['email', 'lozinka'];
@@ -94,9 +93,9 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = ({ onSubmit }: LoginF
                 initialValues={initialValues}
                 onSubmit={(values: LoginValues) => onSubmit(values)}
             >
-                {({ values, handleChange, handleBlur }) => (
+                {({values, handleChange, handleBlur}) => (
                     <Form>
-                        {listTextFields({ values, handleChange, handleBlur })}
+                        {listTextFields({values, handleChange, handleBlur})}
                         <StyledButton type={'submit'}>
                             Potvrdi
                         </StyledButton>
