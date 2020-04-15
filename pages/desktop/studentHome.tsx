@@ -15,11 +15,13 @@ const StyledPaper = styled(Paper)`
 
 const Title: any = styled(Typography)`
  && {
-    color: #121212;
+    color: #666666;
     font-weight: 600;
     font-size: 1.5rem;
     padding: auto;
     text-align: center;
+    border-radius: 10px;
+    text-shadow: 2px 2px 4px #6e6e6e;
 }
 `;
 
@@ -31,7 +33,7 @@ const StyledGridList = styled(GridList)`
 
 const Ticket = styled(Paper)`
 && {
-    background-color: rgba(236, 236, 236, 0.9);
+    background-color: #ececec;
     margin: 2rem;
     height: auto;
     width: auto;   

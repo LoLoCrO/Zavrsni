@@ -28,6 +28,7 @@ const handleRender = (req: any, res: any) => {
 
     // Grab the CSS from the sheets.
     const css = sheets.toString();
+    console.log(typeof html, typeof css)
 
     // Send the rendered page back to the client.
     res.send(renderFullPage(html, css));

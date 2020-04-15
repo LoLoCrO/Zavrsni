@@ -28,6 +28,7 @@ interface LoginFormProps {
 const StyledPaper = styled(Paper)`
     && {
         margin: auto;
+        margin-top: 5rem;
         width: 30rem;
         height: 30rem;
     }     

@@ -1,9 +1,9 @@
 
 import React from 'react';
-import LoginForm from '../components/loginForm';
+import LoginForm, { LoginValues } from '../components/loginForm';
 
 const Index = () => <LoginForm
-    onSubmit={({ email, password }) => {
+    onSubmit={({ email, password }: LoginValues) => {
         console.log(email, password)
     }}
 />

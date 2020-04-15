@@ -4,34 +4,28 @@ import { Container } from '@material-ui/core';
 
 const LecturerBox = styled(Container)`
     && {
-        padding: 1rem;
-        display: table-cell;
         height: 7rem;
+        padding: 1rem;
         width: auto;
+        display: flex;
+        justify-content: space-between;
     }
 `;
 
 const LecturerPhoto = styled.div`
     && {
-        vertical-align: top;
-        padding: 1rem;
         height: 5rem;
-        width: auto;
-        background-color: red;
-        display: table-cell;
-        vertical-align: top;
     }
 `;
 
 const LecturerInfo = styled.div`
     && {
-        vertical-align: bottom;
+        display: flex;
         text-align: end;
-        padding: 1rem;
         height: 5rem;
-        width: 24rem;
-        background-color: blue;
-        display: table-cell;
+        overflow: auto;
+        white-space: nowrap;
+        align-items: flex-end;
     }
 `;
 
@@ -40,8 +34,14 @@ const LecturerTicket: React.FunctionComponent = (): JSX.Element => {
     const list: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
     return <LecturerBox>
-        <LecturerPhoto>Hello1</LecturerPhoto>
-        <LecturerInfo>Hello1</LecturerInfo>
+        <LecturerPhoto>Slika</LecturerPhoto>
+        <LecturerInfo>
+            Titula
+            <br/>
+            Ime Prezime
+            <br/>
+            Predaje
+        </LecturerInfo>
     </LecturerBox>;
 }
 
