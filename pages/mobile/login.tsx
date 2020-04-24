@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Formik, Form} from 'formik';
-import {Button, TextField, Paper, Typography} from '@material-ui/core';
+import { Formik, Form } from 'formik';
+import { Button, TextField, Paper, Typography } from '@material-ui/core';
 
 export interface LoginValues {
     email: string;
@@ -21,16 +21,13 @@ interface TextFieldsProps {
     }
 }
 
-interface LoginFormProps {
-    onSubmit: (values: LoginValues) => void;
-}
-
 const StyledPaper = styled(Paper)`
     && {
         margin: auto;
-        margin-top: 15vh;
-        width: 40vw;
-        height: 50vh;
+        margin-top: 3rem;
+        width: 20rem;
+        height: 20rem;
+        justify-content: center;
     }     
 `;
 
@@ -47,27 +44,29 @@ const StyledTypography = styled(Typography)`
 
 const StyledTextField = styled(TextField)`
     && {
-        width: 35vw;
-        margin: 2.5vw;
+        margin: 1.5rem;
+        width: 17rem;
     }
 `;
 
 const StyledButton = styled(Button)`
     && {
-        margin-top: 3vh;
-        margin-left: 17vw;
-        margin-right: 17vw;
-        width: 5vw;
+        margin-left: 7.5rem;
+        width: 5rem;
         background-color: #424242;
         text-transform: none;
     }
 `;
 
-const LoginForm: React.FunctionComponent<LoginFormProps> = ({onSubmit}: LoginFormProps): JSX.Element => {
+const LoginForm: React.StatelessComponent = (): JSX.Element => {
 
-    const initialValues: LoginValues = {email: '', password: ''};
+    const submitForm = ({ email, password }: LoginValues) => {
+        console.log(email, password);
+    };
 
-    const listTextFields = ({values, handleChange, handleBlur}: TextFieldsProps): JSX.Element[] => {
+    const initialValues: LoginValues = { email: '', password: '' };
+
+    const listTextFields = ({ values, handleChange, handleBlur }: TextFieldsProps): JSX.Element[] => {
 
         const vals: string[] = Object.values(values);
         const labels: string[] = ['email', 'lozinka'];
@@ -92,11 +91,11 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = ({onSubmit}: LoginFor
             </StyledTypography>
             <Formik
                 initialValues={initialValues}
-                onSubmit={(values: LoginValues) => onSubmit(values)}
+                onSubmit={(values: LoginValues) => submitForm(values)}
             >
-                {({values, handleChange, handleBlur}) => (
+                {({ values, handleChange, handleBlur }) => (
                     <Form>
-                        {listTextFields({values, handleChange, handleBlur})}
+                        {listTextFields({ values, handleChange, handleBlur })}
                         <StyledButton type={'submit'}>
                             Potvrdi
                         </StyledButton>

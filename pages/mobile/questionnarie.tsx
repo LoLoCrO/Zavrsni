@@ -59,8 +59,16 @@ const StyledButton = styled(Button)`
 
 const StyledRadioGroup = styled(RadioGroup)`
     && {
+        padding-left: 3vw; 
         flex-direction: row;
         justify-content: center;
+    }
+`;
+
+const StyledFormControlLabel = styled(FormControlLabel)`
+    && {
+        margin: 0;
+        padding: 0;
     }
 `;
 

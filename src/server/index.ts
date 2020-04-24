@@ -1,45 +1,52 @@
 import express from 'express';
-import React from 'react';
-import ReactDOMServer from 'react-dom/server';
-import { ServerStyleSheets } from '@material-ui/core/styles';
-import App from '../../pages/_app';
+import next from 'next';
+import parseArgs from 'minimist';
+import bodyParser from 'body-parser';
+import { UAParser } from 'ua-parser-js';
+import routes, { routesType } from './routes';
+console.log("UAParser ", UAParser);
 
-const renderFullPage = (html:any, css:any) => {
-    return `
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <style id="jss-server-side">${css}</style>
-      </head>
-      <body>
-        <div id="root">${html}</div>
-      </body>
-    </html>
-  `;
-}
+const env = process.env.NODE_ENV;
+const argv = parseArgs(process.argv.slice(2), { alias: { p: 'port' }, boolean: ['h'], default: { p: 3000 } });
 
-const handleRender = (req: any, res: any) => {
-    const sheets = new ServerStyleSheets();
+const app = next({ dev: env === 'development' });
+const handle = app.getRequestHandler();
 
-    // Render the component to a string.
-    const html = ReactDOMServer.renderToString(
-        sheets.collect(App)
-    );
+const agentDetector = (pageToRender: string) => (req: express.Request, res: express.Response) => {
+  const ua = new UAParser(req.headers['user-agent']);
+  console.log("UAParser ", ua);
+  // @ts-ignore
+  const device = ua.device.type || 'desktop';
+  return app.render(req, res, `/${device}/${pageToRender}`, {
+    // @ts-ignore
+    ...req.query,
+    device,
+  });
+};
 
-    // Grab the CSS from the sheets.
-    const css = sheets.toString();
-    console.log(typeof html, typeof css)
+const render = (pageToRender: string) => agentDetector(pageToRender);
 
-    // Send the rendered page back to the client.
-    res.send(renderFullPage(html, css));
-}
+app.prepare().then(() => {
 
-const app = express();
+ const server = express();
 
-app.use('/build', express.static('build'));
+  server.use(bodyParser.json());
+  // server.use('/api', router);
 
-// This is fired every time the server-side receives a request.
-app.use(handleRender);
+  routes.forEach((route: routesType) => server.get(route.path, render(route.pageToRender)));
 
-const port = 3000;
-app.listen(port);
+  server.get('*', (req: any, res: any) => {
+    //TODO: Add logging middleware
+    handle(req, res);
+  });
+
+  try {
+
+    server.listen(argv.port, (err: Error) => {
+      if (err) throw err;
+      console.log('Listening on port ' + argv.port + '!')
+    })
+  } catch (err) {
+    console.error(`Unhandled server exception while listening to port: ${err.message}`, err);
+  }
+});

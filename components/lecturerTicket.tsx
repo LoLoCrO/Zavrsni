@@ -4,8 +4,8 @@ import { Container } from '@material-ui/core';
 
 const LecturerBox = styled(Container)`
     && {
-        height: 7rem;
-        padding: 1rem;
+        height: 15vh;
+        padding: 1vw;
         width: auto;
         display: flex;
         justify-content: space-between;
@@ -14,7 +14,9 @@ const LecturerBox = styled(Container)`
 
 const LecturerPhoto = styled.div`
     && {
-        height: 5rem;
+        height: 5vh;
+        align-self: flex-start;
+
     }
 `;
 
@@ -22,10 +24,11 @@ const LecturerInfo = styled.div`
     && {
         display: flex;
         text-align: end;
-        height: 5rem;
-        overflow: auto;
+        height: 10vh;
+        overflow: hidden;
         white-space: nowrap;
         align-items: flex-end;
+        align-self: flex-end;
     }
 `;
 
