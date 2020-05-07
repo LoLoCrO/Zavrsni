@@ -1,5 +1,5 @@
 import React from 'react';
-import LoginForm, { LoginValues } from '../../components/loginForm';
+import LoginForm, { LoginValues } from '../components/loginForm';
 
 const Login: React.FunctionComponent = (): JSX.Element => {
 

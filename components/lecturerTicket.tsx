@@ -4,7 +4,7 @@ import { Container } from '@material-ui/core';
 
 const LecturerBox = styled(Container)`
     && {
-        height: 15vh;
+        min-height: 6rem;
         padding: 1vw;
         width: auto;
         display: flex;
@@ -24,7 +24,7 @@ const LecturerInfo = styled.div`
     && {
         display: flex;
         text-align: end;
-        height: 10vh;
+        height: 4rem;
         overflow: hidden;
         white-space: nowrap;
         align-items: flex-end;

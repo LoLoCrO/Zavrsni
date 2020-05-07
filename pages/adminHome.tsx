@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Paper, Typography, GridList, GridListTile } from '@material-ui/core';
-import LecturerTicket from '../../components/lecturerTicket';
+import LecturerTicket from '../components/lecturerTicket';
 
 const StyledPaper = styled(Paper)`
  && {
@@ -34,7 +34,7 @@ const StyledGridList = styled(GridList)`
 const Ticket = styled(Paper)`
 && {
     background-color: #ececec;
-    margin: 2vw;
+    margin: 2rem;
     height: auto;
     width: auto;   
 }

@@ -28,7 +28,8 @@ const StyledPaper = styled(Paper)`
         margin: auto;
         margin-top: 5rem;
         margin-bottom: 5rem;
-        padding: 1%;
+        padding-top: 2vw;
+        padding-bottom: 2vw;
         width: 80vw;
         height: auto;
     }     
@@ -36,29 +37,24 @@ const StyledPaper = styled(Paper)`
 
 const StyledTypography = styled(Typography)`
     && {
-        margin: 2%;
-        margin-bottom: 0;
+        padding: 3vw;
         color: #424242;
         font-size: 22;
         text-align: center;
     }
 `;
 
-const StyledButton = styled(Button)`
+const StyledForm = styled(Form)`
     && {
-        margin: auto;
-        margin-top: 2vh;
-        margin-bottom: 2vh;
         display: flex;
-        width: 5rem;
-        background-color: #424242;
-        text-transform: none;
-        justify-content: center;
+        flex-direction: column;
     }
 `;
 
 const StyledRadioGroup = styled(RadioGroup)`
     && {
+        padding-left: 3vw;
+        padding-left: 3vw;
         flex-direction: row;
         justify-content: center;
     }
@@ -66,7 +62,27 @@ const StyledRadioGroup = styled(RadioGroup)`
 
 const StyledRadio = styled(Radio)`
     && {
+        width: 10vw;
         display: inline-block;
+
+        @media (min-width: 768px) {
+            width: 5vw;
+        }
+    }
+`;
+
+const StyledButton = styled(Button)`
+    && {
+        color: #424242;
+        border: 1px solid #c4c4c4;
+        margin: 5vw;
+        align-self: center;
+        background-color: #ececec;
+        text-transform: none;
+        
+        @media (min-width: 768px) {
+            padding: 1vw;
+        }
     }
 `;
 
@@ -127,12 +143,12 @@ const Questionnaire = ({ onSubmit }: QuestionnaireProps): JSX.Element => {
                 onSubmit={(values: any) => onSubmit(values)}
             >
                 {({ values, handleChange }) => (
-                    <Form>
+                    <StyledForm>
                         {listQuestions({ values, handleChange })}
                         <StyledButton type={'submit'}>
                             Potvrdi
                         </StyledButton>
-                    </Form>
+                    </StyledForm>
                 )}
             </Formik>
         </StyledPaper>

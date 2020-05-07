@@ -4,15 +4,9 @@ export type routesType = {
 };
 
 const routes: Array<routesType> = [
-    { path: '/desktop/login', pageToRender: 'login' },
-    { path: '/desktop/studentHome', pageToRender: 'studentHome' },
-    { path: '/desktop/questionnarie', pageToRender: 'questionnarie' },
-    { path: '/tablet/login', pageToRender: 'login' },
-    { path: '/tablet/studentHome', pageToRender: 'studentHome' },
-    { path: '/tablet/questionnarie', pageToRender: 'questionnarie' },
-    { path: '/mobile/login', pageToRender: 'login' },
-    { path: '/mobile/studentHome', pageToRender: 'studentHome' },
-    { path: '/mobile/questionnarie', pageToRender: 'questionnarie' },
+    { path: '/login', pageToRender: 'login' },
+    { path: '/studenthome', pageToRender: 'studentHome' },
+    { path: '/questionnaire', pageToRender: 'questionnaire' },
 ];
 
 export default routes;
