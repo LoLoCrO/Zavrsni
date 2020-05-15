@@ -2,9 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { Paper, Typography, GridList, GridListTile } from '@material-ui/core';
 import LecturerTicket from '../components/lecturerTicket';
+import TemporaryDrawer from '../components/drawer';
 
 const StyledPaper = styled(Paper)`
  && {
+    position: relative;
     background-color: white;
     margin: 2.5rem;
     padding: 2.5rem;
@@ -40,27 +42,31 @@ const Ticket = styled(Paper)`
 }
 `;
 
-const StudentHome: React.FunctionComponent = (): JSX.Element => {
+const AdminHome: React.FunctionComponent = (): JSX.Element => {
 
     const list: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
     return (
         <StyledPaper elevation={3}>
-            <Title width={1}>
-                Vaši predavači
-            </Title>
+            <React.Fragment>
+                <TemporaryDrawer />
+                <Title width={1}>
+                    Vaši predavači
+                </Title>
+            </React.Fragment>
             <StyledGridList>
                 {list.map((num) =>
                     <GridListTile key={num}>
                         <Ticket elevation={3}>
                             <LecturerTicket>
-                            {num}
+                                {num}
                             </LecturerTicket>
                         </Ticket>
-                    </GridListTile>)}
+                    </GridListTile>
+                )}
             </StyledGridList>
         </StyledPaper>
     );
 }
 
-export default StudentHome;
+export default AdminHome;
