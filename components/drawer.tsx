@@ -8,8 +8,6 @@ const StyledIconButton = styled(IconButton)`
         position: absolute;
         padding: 0;
         margin: 0;
-        top: 1rem;
-        left: 1rem;
     }
 `;
 

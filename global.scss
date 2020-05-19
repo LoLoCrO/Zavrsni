@@ -5,33 +5,26 @@ $dot-color: rgb(100, 100, 100);
 // Dimensions
 $dot-size: 1px;
 $dot-space: 22px;
-    
-html, body, #__next  {
-    font-family: 'Roboto', sans-serif;
-    color: #1a1a1a;
-    position: relative;
-	background:
-		linear-gradient(90deg, $bg-color ($dot-space - $dot-size), transparent 1%) center,
-		linear-gradient($bg-color ($dot-space - $dot-size), transparent 1%) center,
-		$dot-color;
-	background-size: $dot-space $dot-space;
-    height: 100%;
-    width: 100%;
-    margin: 0%;
-    padding: 0%;
-    display: flex;
-    justify-content: center;
-}
 
-.login {
-    background-color:blueviolet;
-    justify-content: center;
-    padding: 4rem;
-    border-radius: 10px;
-}
-
-.login-input {
-    padding: 1rem;
-    margin-top: 2rem;
-    margin-bottom: 2rem;
+html,
+body,
+#__next {
+  font-family: "Roboto", sans-serif;
+  color: #1a1a1a;
+  position: relative;
+  background: linear-gradient(
+        90deg,
+        $bg-color ($dot-space - $dot-size),
+        transparent 1%
+      )
+      center,
+    linear-gradient($bg-color ($dot-space - $dot-size), transparent 1%) center,
+    $dot-color;
+  background-size: $dot-space $dot-space;
+  height: 100%;
+  width: 100%;
+  margin: 0%;
+  padding: 0%;
+  display: flex;
+  justify-content: center;
 }
