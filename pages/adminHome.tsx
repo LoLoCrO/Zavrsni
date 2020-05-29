@@ -1,44 +1,41 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Paper, Typography, GridList, GridListTile } from '@material-ui/core';
+import { Paper, Typography } from '@material-ui/core';
 import LecturerTicket from '../components/lecturerTicket';
 import TemporaryDrawer from '../components/drawer';
+import FullWidthTabs from '../components/adminTabs';
 
 const StyledPaper = styled(Paper)`
  && {
     position: relative;
     background-color: white;
-    margin: 2.5rem;
-    padding: 2.5rem;
+    margin-top: 2.5rem;
     border-radius: 10px;
     display: table;
+    width: 85vw;
+    @media (min-width: 768px) {
+        margin: 2.5rem;
+    }
 }
 `;
 
 const Title: any = styled(Typography)`
  && {
-    color: #666666;
+    color: #646464;
     font-weight: 600;
     font-size: 1.5rem;
     padding: auto;
+    margin: 2rem;
     text-align: center;
     border-radius: 10px;
     text-shadow: 2px 2px 4px #6e6e6e;
 }
 `;
 
-const StyledGridList = styled(GridList)`
+const TemporaryDrawerWrapper = styled.div`
  && {
-    padding-top: 2.5rem;
-}
-`;
-
-const Ticket = styled(Paper)`
-&& {
-    background-color: #ececec;
-    margin: 2rem;
-    height: auto;
-    width: auto;   
+    margin-top: 1rem;
+    margin-left: 1.3rem;
 }
 `;
 
@@ -48,23 +45,13 @@ const AdminHome: React.FunctionComponent = (): JSX.Element => {
 
     return (
         <StyledPaper elevation={3}>
-            <React.Fragment>
+            <TemporaryDrawerWrapper>
                 <TemporaryDrawer />
-                <Title width={1}>
-                    Vaši predavači
+            </TemporaryDrawerWrapper>
+            <Title width={1}>
+                Vaši predavači
                 </Title>
-            </React.Fragment>
-            <StyledGridList>
-                {list.map((num) =>
-                    <GridListTile key={num}>
-                        <Ticket elevation={3}>
-                            <LecturerTicket>
-                                {num}
-                            </LecturerTicket>
-                        </Ticket>
-                    </GridListTile>
-                )}
-            </StyledGridList>
+            <FullWidthTabs />
         </StyledPaper>
     );
 }

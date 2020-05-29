@@ -12,10 +12,10 @@ const App: NextPage<AppProps> = ({ Component, pageProps }): JSX.Element => {
     }, []);
 
     return (
-        <div>
+        <React.Fragment>
             <CssBaseline />
             <Component {...pageProps} />
-        </div>
+        </React.Fragment>
     );
 }
 

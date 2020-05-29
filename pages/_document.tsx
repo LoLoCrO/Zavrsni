@@ -1,4 +1,4 @@
-import * as React from 'react';
+  import * as React from 'react';
 import { ServerStyleSheets } from '@material-ui/core/styles';
 import Document, { Head, Main, NextScript, DocumentContext, DocumentInitialProps } from 'next/document';
 
@@ -12,7 +12,10 @@ export default class AppDocument extends Document {
           user-scalable=no"
         />
         <Head>
-          <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet" />
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+          />
         </Head>
         <body>
           <Main />

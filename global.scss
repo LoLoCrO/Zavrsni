@@ -1,10 +1,10 @@
 // Colors
-$bg-color: #ececec;
-$dot-color: rgb(100, 100, 100);
+$bg-color: #d7d7d7;
+$dot-color: #646464;
 
 // Dimensions
 $dot-size: 1px;
-$dot-space: 22px;
+$dot-space: 30px;
 
 html,
 body,
@@ -12,15 +12,11 @@ body,
   font-family: "Roboto", sans-serif;
   color: #1a1a1a;
   position: relative;
-  background: linear-gradient(
-        90deg,
-        $bg-color ($dot-space - $dot-size),
-        transparent 1%
-      )
-      center,
-    linear-gradient($bg-color ($dot-space - $dot-size), transparent 1%) center,
-    $dot-color;
+  background-image: radial-gradient($bg-color $dot-size, transparent $dot-size),
+    radial-gradient($bg-color $dot-size, transparent $dot-size);
   background-size: $dot-space $dot-space;
+  background-position: $dot-size $dot-space;
+
   height: 100%;
   width: 100%;
   margin: 0%;

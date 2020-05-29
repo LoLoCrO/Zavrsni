@@ -31,7 +31,7 @@ const TemporaryDrawer = () => {
             onKeyDown={toggleDrawer(false)}
         >
             <List>
-                {['Pocetna', 'Uredivanje predavca', 'Dodavanje predavaca', 'Drafts']
+                {['Pocetna', 'Uredivanje predavca', 'Dodavanje predavaca', 'Odjavi me']
                     .map((text: string) => (
                         <ListItem button key={text}>
                             <ListItemText primary={text} />

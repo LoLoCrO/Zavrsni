@@ -32,20 +32,16 @@ const LecturerInfo = styled.div`
     }
 `;
 
-const LecturerTicket: React.FunctionComponent = (): JSX.Element => {
-
-    const list: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
-    return <LecturerBox>
+const LecturerTicket: React.FunctionComponent = (): JSX.Element =>
+    <LecturerBox>
         <LecturerPhoto>Slika</LecturerPhoto>
         <LecturerInfo>
             Titula
-            <br/>
+            <br />
             Ime Prezime
-            <br/>
+            <br />
             Predaje
         </LecturerInfo>
     </LecturerBox>;
-}
 
 export default LecturerTicket;

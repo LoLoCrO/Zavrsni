@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Paper, Typography, Container, Box } from '@material-ui/core';
+import { Paper, Typography, Container } from '@material-ui/core';
 import LecturerTicket from '../components/lecturerTicket';
 
 const StyledPaper = styled(Paper)`
