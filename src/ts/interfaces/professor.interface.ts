@@ -7,3 +7,8 @@ export interface Professor {
   grades: number[];
   comments: string[];
 }
+
+export interface IEditProfessor {
+  professor: Professor;
+  setProfessor: React.Dispatch<React.SetStateAction<Professor>>;
+}
