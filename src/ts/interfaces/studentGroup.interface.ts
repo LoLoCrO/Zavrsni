@@ -9,6 +9,12 @@ export interface IBody {
   addOrEditGroup: ({ _id, name }: StudentGroup) => void;
 }
 
+export interface IAddForm {
+  groups: StudentGroup[];
+  groupName: StudentGroup | null;
+  addOrEditGroup: ({ _id, name }: StudentGroup) => void;
+}
+
 export interface IGroupMenu {
   group: StudentGroup;
   openModal: (id?: string | undefined) => void;
@@ -16,8 +22,8 @@ export interface IGroupMenu {
 }
 
 export interface IGroupModal {
-    open: boolean;
-    groupName: StudentGroup | null;
-    handleClose: () => void;
-    addOrEditGroup: ({ _id, name }: StudentGroup) => void;
+  open: boolean;
+  groupName: StudentGroup | null;
+  handleClose: () => void;
+  addOrEditGroup: ({ _id, name }: StudentGroup) => void;
 }

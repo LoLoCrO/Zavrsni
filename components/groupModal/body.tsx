@@ -1,7 +1,7 @@
 import { Typography, TextField, Button } from "@material-ui/core";
 import { Form, Formik } from "formik";
 import { useStyles } from './styles';
-import { StudentGroup, IBody } from '../../src/ts/interfaces/studentGroup.interface';
+import { IBody } from '../../src/ts/interfaces/studentGroup.interface';
 
 const Body = ({ handleClose, groupName, addOrEditGroup }: IBody): JSX.Element => {
 

@@ -1,22 +1,19 @@
 import React from 'react';
 import { DrawerBox, StyledPaper, useStyles } from '../lib/styles/addGroups';
 import Drawer from '../components/drawer';
-import { Grid, Paper, Button, TextField } from '@material-ui/core';
+import { Grid, Paper, Button } from '@material-ui/core';
 import GroupModal from '../components/groupModal';
 import ShortID from 'shortid';
 import GroupMenu from '../components/groupMenu';
 import { StudentGroup } from '../src/ts/interfaces/studentGroup.interface';
-import AddGroupTabs from '../components/addGroupTabs';
 
 const AddGroups: React.FunctionComponent = (): JSX.Element => {
 
     const classes = useStyles();
 
     const [open, setOpen] = React.useState<boolean>(false);
-    const [search, setToSearch] = React.useState<boolean>(false);
     const [groupName, setGroupName] = React.useState<StudentGroup | null>(null);
     const [groups, setGroups] = React.useState<StudentGroup[]>([]);
-    const [searchValue, setSearchValue] = React.useState<string>('');
 
     const handleClose = () => setOpen(false);
 
@@ -30,6 +27,9 @@ const AddGroups: React.FunctionComponent = (): JSX.Element => {
     }
 
     const addOrEditGroup = ({ _id, name }: StudentGroup) => {
+        console.log({ _id, name });
+        console.log(groups);
+        // update db instertOne(), if seed is successful then do this
         if (_id.length) {
             const newGroups: StudentGroup[] = Object.assign([], groups);
             newGroups.forEach((group: StudentGroup) => {
@@ -38,7 +38,7 @@ const AddGroups: React.FunctionComponent = (): JSX.Element => {
                 }
             });
         } else {
-            setGroups([{ _id: ShortID.generate(), name }, ...groups]);
+            setGroups([...groups, { _id: ShortID.generate(), name }]);
         };
         setGroupName(null);
         handleClose();
@@ -48,8 +48,8 @@ const AddGroups: React.FunctionComponent = (): JSX.Element => {
         setGroups(Object.assign([], groups)
             .filter(({ _id }: StudentGroup) => _id !== id));
 
-    const FormRow = (studentGroups: StudentGroup[]) =>
-        studentGroups.map((group: StudentGroup, index: number) =>
+    const FormRow = () =>
+        groups.map((group: StudentGroup, index: number) =>
             <Grid
                 item
                 key={index}
@@ -63,18 +63,6 @@ const AddGroups: React.FunctionComponent = (): JSX.Element => {
             </Grid>
         );
 
-    const filterByValue = (): JSX.Element[] => searchValue.length ?
-        FormRow(
-            groups.filter(group =>
-                Object.keys(group)
-                    .some(() =>
-                        group.name
-                            .toLowerCase()
-                            .includes(searchValue.toLowerCase())
-                    )
-            )
-        ) : FormRow(groups);
-
     return (
         <React.Fragment>
             <GroupModal
@@ -87,16 +75,16 @@ const AddGroups: React.FunctionComponent = (): JSX.Element => {
                 <Drawer />
             </DrawerBox>
             <StyledPaper elevation={3}>
-                <AddGroupTabs
-                    setToSearch={setToSearch}
-                    groupName={groupName}
-                    groups={groups}
-                    addOrEditGroup={addOrEditGroup}
-                    searchValue={searchValue}
-                    setSearchValue={setSearchValue}
-                />
+                <Button
+                    className={classes.addGroupButton}
+                    variant="outlined"
+                    color='secondary'
+                    onClick={() => openModal()}
+                >
+                    Dodaj novu Grupu
+                </Button>
                 <Grid container spacing={1}>
-                    {search ? filterByValue() : FormRow(groups)}
+                    {FormRow()}
                 </Grid>
             </StyledPaper>
         </React.Fragment>
