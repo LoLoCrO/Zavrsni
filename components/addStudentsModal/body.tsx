@@ -39,7 +39,9 @@ const Body = ({ handleClose, groupName, addOrEditGroup }: Props): JSX.Element =>
                             type="text"
                             color='secondary'
                             variant="outlined"
-                        />
+                            inputProps={{
+                                maxLength: 30,
+                            }} />
                         <Button
                             type={'button'}
                             className={classes.cancel}

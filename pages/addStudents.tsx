@@ -4,6 +4,7 @@ import Drawer from '../components/drawer';
 import { Grid, Paper, Button } from '@material-ui/core';
 import AddStudentsModal from '../components/addStudentsModal';
 import ShortID from 'shortid';
+import GroupMenu from '../components/addStudentsModal/groupMenu';
 
 export interface StudentGroup {
     _id: string;
@@ -47,11 +48,21 @@ const AddStudents: React.FunctionComponent = (): JSX.Element => {
         handleClose();
     };
 
+    const removeGroup = (id: string) =>
+        setGroups(Object.assign([], groups)
+            .filter(({ _id }: StudentGroup) => _id !== id));
+
     const FormRow = () =>
-        groups.map((group: StudentGroup) =>
-            <Grid item xs={4}>
-                <Paper className={classes.paper}>
+        groups.map((group: StudentGroup, index: number) =>
+            <Grid
+                item
+                key={index}
+            >
+                <Paper
+                    className={classes.paper}
+                >
                     {group.name}
+                    {GroupMenu({ group, openModal, removeGroup })}
                 </Paper>
             </Grid>
         );
