@@ -1,15 +1,9 @@
 import { Typography, TextField, Button } from "@material-ui/core";
 import { Form, Formik } from "formik";
-import { StudentGroup } from "../../pages/addStudents";
 import { useStyles } from './styles';
+import { StudentGroup, IBody } from '../../src/ts/interfaces/studentGroup.interface';
 
-interface Props {
-    groupName: StudentGroup | null;
-    handleClose: () => void;
-    addOrEditGroup: ({ _id, name }: StudentGroup) => void;
-}
-
-const Body = ({ handleClose, groupName, addOrEditGroup }: Props): JSX.Element => {
+const Body = ({ handleClose, groupName, addOrEditGroup }: IBody): JSX.Element => {
 
     const classes = useStyles();
 

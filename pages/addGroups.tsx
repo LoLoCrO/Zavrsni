@@ -2,16 +2,12 @@ import React from 'react';
 import { DrawerBox, StyledPaper, useStyles } from '../lib/styles/addStudents/addStudents';
 import Drawer from '../components/drawer';
 import { Grid, Paper, Button } from '@material-ui/core';
-import AddStudentsModal from '../components/addStudentsModal';
+import GroupModal from '../components/groupModal';
 import ShortID from 'shortid';
-import GroupMenu from '../components/addStudentsModal/groupMenu';
+import GroupMenu from '../components/groupMenu';
+import { StudentGroup } from '../src/ts/interfaces/studentGroup.interface';
 
-export interface StudentGroup {
-    _id: string;
-    name: string;
-}
-
-const AddStudents: React.FunctionComponent = (): JSX.Element => {
+const AddGroups: React.FunctionComponent = (): JSX.Element => {
 
     const classes = useStyles();
 
@@ -69,7 +65,7 @@ const AddStudents: React.FunctionComponent = (): JSX.Element => {
 
     return (
         <React.Fragment>
-            <AddStudentsModal
+            <GroupModal
                 open={open}
                 groupName={groupName}
                 handleClose={handleClose}
@@ -95,4 +91,4 @@ const AddStudents: React.FunctionComponent = (): JSX.Element => {
     );
 }
 
-export default AddStudents;
+export default AddGroups;

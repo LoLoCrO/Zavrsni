@@ -4,15 +4,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 import { IconButton } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { StudentGroup } from '../../pages/addStudents';
+import { IGroupMenu } from '../../src/ts/interfaces/studentGroup.interface';
 
-interface IGropuMenu {
-    group: StudentGroup;
-    openModal: (id?: string | undefined) => void;
-    removeGroup: (id: string) => void;
-}
-
-const GroupMenu = ({ group: { _id }, openModal, removeGroup }: IGropuMenu): JSX.Element => {
+const GroupMenu = ({ group: { _id }, openModal, removeGroup }: IGroupMenu): JSX.Element => {
 
     const deleteGroup = ({ close }: any) => {
         removeGroup(_id);
