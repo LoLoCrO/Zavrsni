@@ -9,6 +9,7 @@ const routes: Array<routesType> = [
     { path: '/questionnaire', pageToRender: 'questionnaire' },
     { path: '/adminhome', pageToRender: 'adminHome' },
     { path: '/addstudents', pageToRender: 'addStudents' },
+    { path: '/addgroups', pageToRender: 'addGroups' },
 ];
 
 export default routes;

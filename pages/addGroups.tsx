@@ -1,5 +1,5 @@
 import React from 'react';
-import { DrawerBox, StyledPaper, useStyles } from '../lib/styles/addStudents/addStudents';
+import { DrawerBox, StyledPaper, useStyles } from '../lib/styles/addGroups';
 import Drawer from '../components/drawer';
 import { Grid, Paper, Button } from '@material-ui/core';
 import GroupModal from '../components/groupModal';
