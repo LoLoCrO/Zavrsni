@@ -2,14 +2,13 @@ import React from 'react';
 import { DrawerBox, StyledPaper, useStyles } from '../lib/styles/addGroups';
 import Drawer from '../components/drawer';
 import { Grid, Paper } from '@material-ui/core';
-import ShortID from 'shortid';
 import MemberModal from '../components/memberModal';
-import AddGroupTabs from '../components/addGroupTabs';
 import { professors } from '../lib/mocks/professors';
 import { Student } from '../src/ts/interfaces/users.interface';
 import { Member } from '../src/ts/interfaces/member.interface';
 import MemberMenu from '../components/memberMenu';
 import { Professor } from '../src/ts/interfaces/users.interface';
+import AddPersons from '../components/addPersons';
 
 const AddStudentsAndProfessors: React.FunctionComponent = (): JSX.Element => {
 
@@ -21,10 +20,10 @@ const AddStudentsAndProfessors: React.FunctionComponent = (): JSX.Element => {
     const [open, setOpen] = React.useState<boolean>(false);
     const [search, setToSearch] = React.useState<boolean>(false);
     const [member, setMember] = React.useState<Member>(initialMember);
-    const [students, setStudents] = React.useState<Student[]>([]);
+    const [currentGroup, setCurrentGroup] = React.useState<Student[]>([]);
     const [searchValue, setSearchValue] = React.useState<string>('');
 
-    React.useEffect(() => console.log(students), [students])
+    React.useEffect(() => console.log(currentGroup), [currentGroup])
 
     const handleClose = () => setOpen(false);
 
@@ -35,13 +34,13 @@ const AddStudentsAndProfessors: React.FunctionComponent = (): JSX.Element => {
 
     const edit = ({ _id, role, email }: Member) => {
         if (role === 'student') {
-            const newStudents: Student[] = Object.assign([], students);
+            const newStudents: Student[] = Object.assign([], currentGroup);
             newStudents.forEach((student: Student) => {
                 if (student._id === _id) {
                     student.email = email;
                 }
             });
-            setStudents(newStudents);
+            setCurrentGroup(newStudents);
         } else {
             const newLecturer = professors.find((professor: Professor) => professor._id === _id);
             if (newLecturer) {
@@ -53,33 +52,54 @@ const AddStudentsAndProfessors: React.FunctionComponent = (): JSX.Element => {
         setOpen(false);
     };
 
+    const add = (student: Student) => {
+        if (student) {
+            console.log("ADD: ", student);
+            const newStudents: Student[] = Object.assign([], currentGroup);
+            newStudents.push(student);
+            setCurrentGroup(newStudents);
+            setOpen(false);
+        }
+    };
+
     const remove = (id: string) =>
-        setStudents(Object.assign([], students)
+        setCurrentGroup(Object.assign([], currentGroup)
             .filter(({ _id }: Student) => _id !== id));
 
-    const FormRow = (students: Student[]) =>
-        students.map((member: Student, index: number) =>
-            <Grid
-                item
-                key={index}
-            >
-                <Paper
-                    className={classes.paper}
-                >
-                    {member.title ? <br>{member.title}</br> : null}
-                    <br>
-                        {member.firstName + `${member.middleName ? ` ${member.middleName} ` : ` `}` + member.lastName}
-                    </br>
-                    {member.email}
-                    <br />
-                    {MemberMenu({ member, openModal, remove })}
-                </Paper>
-            </Grid>
-        );
+    const FormRow = (s: Student[]) => {
+        console.log(s);
+        return (
+            s.map((student: Student, index: number) => {
+                const full =
+                    `${student.title + ` ` +
+                    student.firstName + ` ` +
+                    student.lastName + ` ` +
+                    student.email}`;
 
-    const filterByValue = (): JSX.Element[] => searchValue.length ?
+                console.log(student);
+                if (student._id.length) {
+                    return (
+                        <Grid
+                            item
+                            key={index}
+                        >
+                            <Paper
+                                className={classes.paper}
+                            >
+                                <div>
+                                    {full}
+                                </div>
+                            </Paper>
+                        </Grid>
+                    )
+                }
+            }
+            )
+        )
+    }
+    const filterByValue = () => searchValue.length ?
         FormRow(
-            students.filter((student: Student) =>
+            currentGroup.filter((student: Student) =>
                 Object.keys(student)
                     .some(() =>
                         student
@@ -88,7 +108,7 @@ const AddStudentsAndProfessors: React.FunctionComponent = (): JSX.Element => {
                             .includes(searchValue.toLowerCase())
                     )
             )
-        ) : FormRow(students);
+        ) : FormRow(currentGroup);
 
     return (
         <React.Fragment>
@@ -102,11 +122,10 @@ const AddStudentsAndProfessors: React.FunctionComponent = (): JSX.Element => {
                 <Drawer />
             </DrawerBox>
             <StyledPaper elevation={3}>
-                <AddGroupTabs
+                <AddPersons
                     setToSearch={setToSearch}
-                    member={member}
-                    groups={students}
-                    editGroup={edit}
+                    add={add}
+                    currentGroup={currentGroup}
                     searchValue={searchValue}
                     setSearchValue={setSearchValue}
                 />
@@ -124,7 +143,7 @@ const AddStudentsAndProfessors: React.FunctionComponent = (): JSX.Element => {
                     {MemberMenu({ member: lecturer, openModal, remove })}
                 </Paper>
                 <Grid container spacing={1}>
-                    {search ? filterByValue() : FormRow(students)}
+                    {search ? filterByValue() : FormRow(currentGroup)}
                 </Grid>
             </StyledPaper>
         </React.Fragment >

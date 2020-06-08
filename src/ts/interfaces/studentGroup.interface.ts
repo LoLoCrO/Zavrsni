@@ -1,6 +1,15 @@
+import { Professor, Student } from "./users.interface";
+
 export interface StudentGroup {
   _id: string;
   name: string;
+  lecturer?: Professor;
+  students?: Student[];
+}
+
+export interface AddStudentsForm {
+  currentGroup: Student[];
+  add: (student: Student) => void;
 }
 
 export interface IBody {

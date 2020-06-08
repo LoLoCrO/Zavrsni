@@ -10,7 +10,6 @@ import { students } from "../../lib/mocks/students";
 const Body = ({ handleClose, member, edit }: MemberModalBody): JSX.Element => {
 
     const classes = useStyles();
-    console.log(member.role, member)
     const roleMembers: any = member.role === "professor" ? professors : students;
 
     return (
