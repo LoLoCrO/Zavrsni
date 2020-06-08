@@ -4,11 +4,14 @@ import { useStyles } from './styles';
 import { MemberModalBody } from "../../src/ts/interfaces/member.interface";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { professors } from "../../lib/mocks/professors";
-import { Professor } from "../../src/ts/interfaces/users.interface";
+import { Person } from "../../src/ts/interfaces/users.interface";
+import { students } from "../../lib/mocks/students";
 
-const Body = ({ handleClose, member: { _id, role, email }, edit }: MemberModalBody): JSX.Element => {
+const Body = ({ handleClose, member, edit }: MemberModalBody): JSX.Element => {
 
     const classes = useStyles();
+    console.log(member.role, member)
+    const roleMembers: any = member.role === "professor" ? professors : students;
 
     return (
         <div
@@ -21,31 +24,39 @@ const Body = ({ handleClose, member: { _id, role, email }, edit }: MemberModalBo
                 Promijeni predavaca:
             </Typography>
             <Formik
-                initialValues={professors[5]}
-                onSubmit={(res) => { //{ _id, email }
-                    console.log(res)
-                    // edit({ _id, email, role })
+                initialValues={member}
+                onSubmit={(values) => {
+                    console.log(`{ _id, email }`, values)
+                    edit({
+                        _id: values._id,
+                        email: values.email,
+                        role: member.role
+                    })
                 }}
             >
-                {({ values, handleChange }) => (
+                {({ handleChange }) => (
                     <Form>
                         <Autocomplete
-                            id="combo-box"
-                            options={professors}
+                            onChange={(_, m) => edit(m ? m : {
+                                _id: member._id,
+                                email: member.email,
+                                role: member.role,
+                                firstName: '',
+                                lastName: '',
+                            })}
+                            options={roleMembers}
                             getOptionLabel={
-                                ({ title, firstName, lastName, email }: Professor) =>
+                                ({ title, firstName, lastName, email }: Person) =>
                                     `${title + ` ` + firstName + ` ` + lastName + ` ` + email}`}
                             renderInput={(params: any) =>
                                 <TextField
                                     {...params}
-                                    onClick={() => console.log(params)}
                                     onChange={handleChange}
                                     className={classes.input}
                                     type="text"
                                     label="Pretraga"
                                     color='secondary'
                                     variant='outlined'
-                                    placeholder={values.email}
                                 />
                             }
                         />

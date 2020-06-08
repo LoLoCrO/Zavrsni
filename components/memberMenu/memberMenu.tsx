@@ -6,16 +6,16 @@ import { IconButton } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { IMemberMenu } from '../../src/ts/interfaces/member.interface';
 
-const MemberMenu = ({ member: { _id, role, email }, openModal, remove }: IMemberMenu): JSX.Element => {
+const MemberMenu = ({ member, openModal, remove }: IMemberMenu): JSX.Element => {
 
     const deleteMember = ({ close }: any) => {
-        remove(_id);
+        remove(member._id);
         close();
     }
 
     const rename = ({ close }: any) => {
         console.log(typeof close)
-        openModal({ _id, role, email });
+        openModal(member);
         close();
     }
 

@@ -4,6 +4,7 @@ export interface Person {
   middleName?: string;
   lastName: string;
   title?: string;
+  role: "none" | "student" | "professor";
   email: string;
 }
 

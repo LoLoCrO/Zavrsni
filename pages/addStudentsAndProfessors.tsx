@@ -43,7 +43,11 @@ const AddStudentsAndProfessors: React.FunctionComponent = (): JSX.Element => {
             });
             setStudents(newStudents);
         } else {
-            setLecturer(Object.assign({}, { ...lecturer, email }));
+            const newLecturer = professors.find((professor: Professor) => professor._id === _id);
+            if (newLecturer) {
+                console.log('Dodajem: ', newLecturer);
+                setLecturer(newLecturer);
+            }
         }
         setMember(initialMember);
         setOpen(false);
@@ -54,16 +58,7 @@ const AddStudentsAndProfessors: React.FunctionComponent = (): JSX.Element => {
             .filter(({ _id }: Student) => _id !== id));
 
     const FormRow = (students: Student[]) =>
-        students.map((
-            {
-                _id,
-                firstName,
-                middleName,
-                lastName,
-                title,
-                email,
-            }: Student,
-            index: number) =>
+        students.map((member: Student, index: number) =>
             <Grid
                 item
                 key={index}
@@ -71,13 +66,13 @@ const AddStudentsAndProfessors: React.FunctionComponent = (): JSX.Element => {
                 <Paper
                     className={classes.paper}
                 >
-                    {title ? <br>{title}</br> : null}
+                    {member.title ? <br>{member.title}</br> : null}
                     <br>
-                        {firstName + middleName ? ` ${middleName} ` : ` ` + lastName}
+                        {member.firstName + `${member.middleName ? ` ${member.middleName} ` : ` `}` + member.lastName}
                     </br>
-                    {email}
+                    {member.email}
                     <br />
-                    {MemberMenu({ member: { _id, role: 'student', email }, openModal, remove })}
+                    {MemberMenu({ member, openModal, remove })}
                 </Paper>
             </Grid>
         );
@@ -126,7 +121,7 @@ const AddStudentsAndProfessors: React.FunctionComponent = (): JSX.Element => {
                     }
                     <br />
                     {lecturer.email}
-                    {MemberMenu({ member, openModal, remove })}
+                    {MemberMenu({ member: lecturer, openModal, remove })}
                 </Paper>
                 <Grid container spacing={1}>
                     {search ? filterByValue() : FormRow(students)}

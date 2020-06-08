@@ -1,3 +1,5 @@
+import { Person, Student, Professor } from "./users.interface";
+
 export interface Member {
   _id: string;
   role: "none" | "student" | "professor";
@@ -5,26 +7,26 @@ export interface Member {
 }
 
 export interface MemberModalBody {
-  member: Member;
+  member: Member | Person | Student | Professor;
   handleClose: () => void;
-  edit: ({ _id, email }: Member) => void;
+  edit: (member: Member | Person | Student | Professor) => void;
 }
 
 export interface IAddForm {
   groups: Member[];
-  member: Member | null;
-  edit: ({ _id, email }: Member) => void;
+  member: Member | Person | Student | Professor | null;
+  edit: (member: Member | Person | Student | Professor) => void;
 }
 
 export interface IMemberMenu {
-  member: Member;
-  openModal: (member: Member) => void;
+  member: Member | Person | Student | Professor;
+  openModal: (member: Member | Person | Student | Professor) => void;
   remove: (id: string) => void;
 }
 
 export interface IMemberModal {
   open: boolean;
-  member: Member;
+  member: Member | Person | Student | Professor;
   handleClose: () => void;
-  edit: ({ _id, email }: Member) => void;
+  edit: (member: Member | Person | Student | Professor) => void;
 }
