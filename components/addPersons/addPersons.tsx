@@ -1,6 +1,6 @@
 import React from 'react';
 import SwipeableViews from 'react-swipeable-views';
-import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -39,6 +39,10 @@ const useStyles = makeStyles(() => ({
     root: {
         backgroundColor: 'white',
         width: '100%',
+    },
+    input: {
+        margin: "7.5%",
+        width: "85%"
     },
 }));
 
@@ -82,11 +86,11 @@ const AddPersons = ({ currentGroup, add, searchValue, setSearchValue, setToSearc
                 </TabPanel>
                 <TabPanel value={value} index={1} dir={theme.direction}>
                     <TextField
-                        // className={classes.input}
+                        className={classes.input}
                         id='name'
                         value={searchValue}
                         onChange={(e) => setSearchValue(e.target.value)}
-                        label="Ime grupe"
+                        label="Pretraga"
                         type="text"
                         color='secondary'
                         variant="outlined"

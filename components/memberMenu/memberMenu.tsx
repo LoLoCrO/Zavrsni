@@ -24,7 +24,7 @@ const MemberMenu = ({ member, openModal, remove }: IMemberMenu): JSX.Element => 
             {(popupState) => (
                 <React.Fragment>
                     <IconButton {...bindTrigger(popupState)}>
-                        <MoreVertIcon color='secondary' />
+                        <MoreVertIcon color='primary' />
                     </IconButton>
                     <Menu {...bindMenu(popupState)}>
                         <MenuItem

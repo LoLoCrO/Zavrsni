@@ -15,7 +15,7 @@ import {
 } from '../lib/styles/professorProfile';
 import Drawer from '../components/drawer';
 import EditProfessor from "../components/editProfessor";
-import { Professor } from '../src/ts/interfaces/professor.interface';
+import { Professor } from '../src/ts/interfaces/users.interface';
 import { professors } from '../lib/mocks/professors';
 
 const StudentHome: React.FunctionComponent = (): JSX.Element => {

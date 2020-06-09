@@ -6,7 +6,7 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { professors } from '../lib/mocks/professors';
-import { Professor } from '../src/ts/interfaces/professor.interface';
+import { Professor } from '../src/ts/interfaces/users.interface';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

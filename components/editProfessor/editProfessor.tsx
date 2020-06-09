@@ -1,6 +1,6 @@
 import React from 'react';
 import { Formik } from 'formik';
-import { Professor, IEditProfessor } from '../../src/ts/interfaces/professor.interface';
+import { Professor, IEditProfessor } from '../../src/ts/interfaces/users.interface';
 import { StyledForm, StyledTextField, StyledButton } from './styles';
 
 const EditProfessor = ({ professor, setProfessor }: IEditProfessor): JSX.Element =>

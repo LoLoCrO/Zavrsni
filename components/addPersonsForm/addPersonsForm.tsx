@@ -8,6 +8,8 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 
 const AddPersonsForm = ({ currentGroup, add }: AddStudentsForm): JSX.Element => {
 
+    const classes = useStyles();
+
     const initial: Student = {
         _id: '',
         email: '',
@@ -15,27 +17,19 @@ const AddPersonsForm = ({ currentGroup, add }: AddStudentsForm): JSX.Element => 
         firstName: '',
         lastName: '',
     };
-    const classes = useStyles();
 
-    const submit = (student: Student) => {
-        if (currentGroup.length) {
-            if (!currentGroup.find((s: Student) => s._id === student._id)) {
-                add(student)
-            } else return;
-        }
-        else return;
-    };
+    const filtered = students.filter((s: Student) => !currentGroup.includes(s));
 
     return (
         <Formik
             initialValues={initial}
-            onSubmit={(student: Student) => submit(student)}
+            onSubmit={(student: Student) => add(student)}
         >
             {({ handleChange }) => (
                 <Form>
                     <Autocomplete
                         onChange={(_, m) => add(m ? m : initial)}
-                        options={students}
+                        options={filtered}
                         getOptionLabel={
                             ({ title, firstName, lastName, email }: Person) =>
                                 `${title + ` ` + firstName + ` ` + lastName + ` ` + email}`}
@@ -45,12 +39,19 @@ const AddPersonsForm = ({ currentGroup, add }: AddStudentsForm): JSX.Element => 
                                 onChange={handleChange}
                                 className={classes.input}
                                 type="text"
-                                label="Pretraga"
+                                label="Studenti"
                                 color='secondary'
                                 variant='outlined'
                             />
                         }
                     />
+                    <Button
+                        className={classes.saveGroupButton}
+                        variant="outlined"
+                        color='primary'
+                    >
+                        Pohrani
+                    </Button>
                     <Button
                         className={classes.addGroupButton}
                         type={'submit'}

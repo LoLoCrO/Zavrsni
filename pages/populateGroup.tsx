@@ -1,7 +1,7 @@
 import React from 'react';
 import { DrawerBox, StyledPaper, useStyles } from '../lib/styles/addGroups';
 import Drawer from '../components/drawer';
-import { Grid, Paper } from '@material-ui/core';
+import { Grid, Paper, Button, } from '@material-ui/core';
 import MemberModal from '../components/memberModal';
 import { professors } from '../lib/mocks/professors';
 import { Student } from '../src/ts/interfaces/users.interface';
@@ -9,8 +9,43 @@ import { Member } from '../src/ts/interfaces/member.interface';
 import MemberMenu from '../components/memberMenu';
 import { Professor } from '../src/ts/interfaces/users.interface';
 import AddPersons from '../components/addPersons';
+import { Title } from '../lib/styles/adminHome';
+import styled from 'styled-components';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
-const AddStudentsAndProfessors: React.FunctionComponent = (): JSX.Element => {
+const StyledGrid = styled(Grid)`
+    && {
+        padding: 1rem;
+    }
+`;
+
+const StyledItem = styled(Grid)`
+    && {
+        padding-left: 1rem;
+        display: flex;
+        justify-content: space-between;
+    }
+`;
+
+const StyledTicket = styled(Paper)`
+    && {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        justify-content: center;
+    }
+`;
+
+const StyledLecturer = styled.div`
+    && {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        justify-content: center;
+    }
+`;
+
+const PopulateGroup: React.FunctionComponent = (): JSX.Element => {
 
     const classes = useStyles();
 
@@ -53,11 +88,8 @@ const AddStudentsAndProfessors: React.FunctionComponent = (): JSX.Element => {
     };
 
     const add = (student: Student) => {
-        if (student) {
-            console.log("ADD: ", student);
-            const newStudents: Student[] = Object.assign([], currentGroup);
-            newStudents.push(student);
-            setCurrentGroup(newStudents);
+        if (!currentGroup.includes(student) && student._id.length > 0) {
+            setCurrentGroup(Object.assign([], [student, ...currentGroup]));
             setOpen(false);
         }
     };
@@ -79,18 +111,23 @@ const AddStudentsAndProfessors: React.FunctionComponent = (): JSX.Element => {
                 console.log(student);
                 if (student._id.length) {
                     return (
-                        <Grid
+                        <StyledItem
                             item
                             key={index}
                         >
-                            <Paper
+                            <StyledTicket
                                 className={classes.paper}
                             >
                                 <div>
                                     {full}
                                 </div>
-                            </Paper>
-                        </Grid>
+                                <Button
+                                    onClick={() => remove(student._id)}
+                                >
+                                    <HighlightOffIcon color='secondary' />
+                                </Button>
+                            </StyledTicket>
+                        </StyledItem>
                     )
                 }
             }
@@ -122,6 +159,9 @@ const AddStudentsAndProfessors: React.FunctionComponent = (): JSX.Element => {
                 <Drawer />
             </DrawerBox>
             <StyledPaper elevation={3}>
+                <Title>
+                    Grupa 550
+                </Title>
                 <AddPersons
                     setToSearch={setToSearch}
                     add={add}
@@ -132,22 +172,33 @@ const AddStudentsAndProfessors: React.FunctionComponent = (): JSX.Element => {
                 <Paper
                     className={classes.paper}
                 >
-                    {
-                        `${lecturer.title ? `${lecturer.title} ` : ` `}` +
-                        lecturer.firstName + ` ` +
-                        `${lecturer.middleName ? ` ${lecturer.middleName} ` : ` `}` +
-                        lecturer.lastName
-                    }
-                    <br />
-                    {lecturer.email}
-                    {MemberMenu({ member: lecturer, openModal, remove })}
+                    <Title
+                        color='primary'
+                    >
+                        Predavac:
+                    </Title>
+                    <StyledItem>
+                        <StyledLecturer>
+                            {
+                                `${lecturer.title ? `${lecturer.title} ` : ` `}` +
+                                lecturer.firstName + ` ` +
+                                `${lecturer.middleName ? ` ${lecturer.middleName} ` : ` `}` +
+                                lecturer.lastName + ` ` +
+                                lecturer.email
+                            }
+                        </StyledLecturer>
+                        {MemberMenu({ member: lecturer, openModal, remove })}
+                    </StyledItem>
                 </Paper>
-                <Grid container spacing={1}>
+                <Title color='secondary'>
+                    Studenti:
+                </Title>
+                <StyledGrid container spacing={1}>
                     {search ? filterByValue() : FormRow(currentGroup)}
-                </Grid>
+                </StyledGrid>
             </StyledPaper>
         </React.Fragment >
     );
 }
 
-export default AddStudentsAndProfessors;
+export default PopulateGroup;

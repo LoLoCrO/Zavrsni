@@ -6,12 +6,18 @@ export const useStyles = makeStyles(() =>
       flexGrow: 1,
     },
     input: {
-      margin: "2.5%",
-      width: "50%",
+      margin: "7.5%",
+      width: "85%",
       "@media(max-width: 768px)": {
         margin: "7.5%",
-        width: "85%",
       },
+    },
+    saveGroupButton: {
+      margin: "2.5%",
+      padding: "1rem",
+      float: "left",
+      marginLeft: "7.5%",
+      marginBottom: "2rem",
     },
     addGroupButton: {
       margin: "2.5%",

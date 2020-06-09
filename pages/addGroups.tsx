@@ -1,7 +1,7 @@
 import React from 'react';
 import { DrawerBox, StyledPaper, useStyles } from '../lib/styles/addGroups';
 import Drawer from '../components/drawer';
-import { Grid, Paper, Button, TextField } from '@material-ui/core';
+import { Grid, Paper } from '@material-ui/core';
 import GroupModal from '../components/groupModal';
 import ShortID from 'shortid';
 import GroupMenu from '../components/groupMenu';

@@ -10,7 +10,7 @@ const AdminHome: React.FunctionComponent = (): JSX.Element =>
         </TemporaryDrawerWrapper>
         <Title width={1}>
             Vaši predavači
-                </Title>
+        </Title>
         <FullWidthTabs />
     </StyledPaper>;
 
