@@ -1,6 +1,6 @@
 export type routesType = {
   role: string;
-  path: string | RegExp;
+  path: string;
   pageToRender: string;
 };
 

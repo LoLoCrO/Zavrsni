@@ -1,9 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import routes from "../../routes";
+import { publicPaths } from "./authentication";
 
 const authorizeUser = (req: Request, res: Response, next: NextFunction) => {
-  const currentRoute = routes.find((route) =>
-    req.path.toLowerCase().includes(route.pageToRender.toLowerCase())
+  const currentRoute = routes.find(
+    (route) =>
+      req.path.toLowerCase().includes(route.path.toLowerCase()) ||
+      publicPaths.find((path) => req.path.includes(path))
   );
 
   console.log(currentRoute);
@@ -12,8 +15,9 @@ const authorizeUser = (req: Request, res: Response, next: NextFunction) => {
     res.status(404).send({ message: "Ruta ne postoji" });
     return next();
   } else {
-    if (currentRoute.path === "/login" && !req.headers.authorization)
+    if (currentRoute.path === "/login" && !req.headers.authorization) {
       return next();
+    }
     const { user } = req.body;
     if (!user) {
       console.log("Korisnik ne postoji");

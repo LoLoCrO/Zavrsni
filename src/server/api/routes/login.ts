@@ -5,7 +5,7 @@ import { Router } from "express";
 import jwt from "jsonwebtoken";
 
 const Login = (router: Router) => {
-  router.get("/token", (req, res) => {
+  router.get("/auth", (req, res) => {
     const { email, password } = req.body;
     users.findOne({ email, password }).then((user) => {
       if (!user) {
