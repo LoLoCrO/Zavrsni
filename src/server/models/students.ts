@@ -7,8 +7,9 @@ interface IStudentSchema extends Document {
   middleName?: string;
   lastName: string;
   title?: string;
-  role: "student";
+  role: string;
   email: string;
+  password: string;
   professorMarks?: ProfessorMark[];
 }
 

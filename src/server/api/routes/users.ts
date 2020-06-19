@@ -1,18 +1,18 @@
-import { students } from "../../models/students";
+import { users } from "../../models/users";
 import { Router } from "express";
 
-const Students = (router: Router) => {
-  router.post("/students", (req, res) => {
+const Users = (router: Router) => {
+ 
+  router.post("/users", (req, res) => {
     const { body } = req;
 
     if (!body) {
       return res.status(400).json({
         success: false,
-        error: "You must provide a student!",
+        error: "You must provide a user!",
       });
     }
-    
-    const group = new students(body);
+    const group = new users(body);
 
     if (!group) {
       return res.status(400).json({ success: false });
@@ -24,47 +24,47 @@ const Students = (router: Router) => {
         return res.status(201).json({
           success: true,
           group: group,
-          message: "student saved!",
+          message: "User saved!",
         });
       })
       .catch((err: any) => {
         return res.status(400).json({
           err,
-          message: "student not saved!",
+          message: "Professor not saved!",
         });
       });
   });
 
-  router.get("/students", (_req, res) => {
-    students
+  router.get("/users", (_req, res) => {
+    users
       .find()
       .sort({ lastName: 1 })
       .exec()
       .then((docs) => res.status(200).json(docs))
       .catch((err) =>
         res.status(500).json({
-          message: "Error getting students",
+          message: "Error getting users",
           error: err,
         })
       );
   });
 
-  router.get("/students/:id", (_req, res) => {
-    students
+  router.get("/users/:id", (_req, res) => {
+    users
       .find({ _id: _req.params.id })
       .exec()
       .then((docs) => res.status(200).json(docs))
       .catch((err) =>
         res.status(500).json({
-          message: "Error getting student",
+          message: "Error getting users",
           error: err,
         })
       );
   });
 
-  router.post("/students/:id", (req, res) => {
+  router.post("/users/:id", (req, res) => {
     const body = req.body;
-    console.log(body)
+
     if (!body) {
       return res.status(400).json({
         success: false,
@@ -72,32 +72,28 @@ const Students = (router: Router) => {
       });
     }
 
-    students
-      .findByIdAndUpdate(
-        { _id: req.params.id },
-        { $set: req.body },
-        { new: true }
-      )
+    users
+      .findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true })
       .then((docs) => res.status(200).json(docs))
       .catch((err) =>
         res.status(500).json({
-          message: "Error getting student",
+          message: "Error getting professor",
           error: err,
         })
       );
   });
 
-  router.delete("/students/:id", (req, res) => {
-    students
+  router.delete("/users/:id", (req, res) => {
+    users
       .findByIdAndDelete(req.params.id)
       .then((docs) => res.status(200).json(docs))
       .catch((err) =>
         res.status(500).json({
-          message: "Error getting student",
+          message: "Error getting professor",
           error: err,
         })
       );
   });
 };
 
-export default Students;
+export default Users;

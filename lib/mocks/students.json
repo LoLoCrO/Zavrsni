@@ -1,0 +1,282 @@
+[
+  {
+    "firstName": "Ivan",
+    "lastName": "Ivic",
+    "title": "dipl.ing.",
+    "role": "student",
+    "password": "1234",
+    "email": "ivan.ivic@mail.com"
+  },
+  {
+    "firstName": "Luka",
+    "lastName": "Lukic",
+    "title": "dipl.ing.",
+    "role": "student",
+    "password": "1234",
+    "email": "lukic.luka@mail.com"
+  },
+  {
+    "firstName": "Mario",
+    "lastName": "Maric",
+    "title": "dipl.ing.",
+    "role": "student",
+    "password": "1234",
+    "email": "m.maric@mail.com"
+  },
+  {
+    "firstName": "Matko",
+    "lastName": "Matic",
+    "title": "dipl.ing.",
+    "role": "student",
+    "password": "1234",
+    "email": "matkomatic@mail.com"
+  },
+  {
+    "firstName": "Marko",
+    "lastName": "Markic",
+    "title": "dipl.ing.",
+    "role": "student",
+    "password": "1234",
+    "email": "marko.markic@mail.com"
+  },
+  {
+    "firstName": "Karlo",
+    "lastName": "Karlic",
+    "title": "dipl.ing.",
+    "role": "student",
+    "password": "1234",
+    "email": "karlo.karlic@mail.com"
+  },
+  {
+    "firstName": "Miro",
+    "lastName": "Miric",
+    "title": "dipl.ing.",
+    "role": "student",
+    "password": "1234",
+    "email": "mmiric@mail.com"
+  },
+  {
+    "firstName": "Petar",
+    "lastName": "Peric",
+    "title": "dipl.ing.",
+    "role": "student",
+    "password": "1234",
+    "email": "petar.peric@mail.com"
+  },
+  {
+    "firstName": "Ante",
+    "lastName": "Antic",
+    "title": "dipl.ing.",
+    "role": "student",
+    "password": "1234",
+    "email": "ante.antic@mail.com"
+  },
+  {
+    "firstName": "Andrija",
+    "lastName": "Andric",
+    "title": "dipl.ing.",
+    "role": "student",
+    "password": "1234",
+    "email": "and.andic@mail.com"
+  },
+  {
+    "firstName": "Filip",
+    "lastName": "Filic",
+    "title": "dipl.ing.",
+    "role": "student",
+    "password": "1234",
+    "email": "filip.filic@mail.com"
+  },
+  {
+    "firstName": "karla",
+    "lastName": "karlic",
+    "title": "dipl.ing.",
+    "role": "student",
+    "password": "1234",
+    "email": "karla.karlic@mail.com"
+  },
+  {
+    "firstName": "lucija",
+    "lastName": "lucic",
+    "title": "dipl.ing.",
+    "role": "student",
+    "password": "1234",
+    "email": "lucija.lucic@mail.com"
+  },
+  {
+    "firstName": "marija",
+    "lastName": "maric",
+    "title": "dipl.ing.",
+    "role": "student",
+    "password": "1234",
+    "email": "marija.maric@mail.com"
+  },
+  {
+    "firstName": "Iva",
+    "lastName": "Ivic",
+    "title": "dipl.ing.",
+    "role": "student",
+    "password": "1234",
+    "email": "iva.ivic@mail.com"
+  },
+  {
+    "firstName": "Vanja",
+    "lastName": "Vanjic",
+    "title": "dipl.ing.",
+    "role": "student",
+    "password": "1234",
+    "email": "vanja.vanjic@mail.com"
+  },
+  {
+    "firstName": "Josipa",
+    "lastName": "Josic",
+    "title": "dipl.ing.",
+    "role": "student",
+    "password": "1234",
+    "email": "josipa.josic@mail.com"
+  },
+  {
+    "firstName": "Matija",
+    "lastName": "Matic",
+    "title": "dipl.ing.",
+    "role": "student",
+    "password": "1234",
+    "email": "matija.matic@mail.com"
+  },
+  {
+    "firstName": "Lorena",
+    "lastName": "Loric",
+    "title": "dipl.ing.",
+    "role": "student",
+    "password": "1234",
+    "email": "lorena.loric@mail.com"
+  },
+  {
+    "firstName": "Petra",
+    "lastName": "Petric",
+    "title": "dipl.ing.",
+    "role": "student",
+    "password": "1234",
+    "email": "petra.petric@mail.com"
+  },
+  {
+    "firstName": "Bruno",
+    "lastName": "Busic",
+    "title": "dipl.ing.",
+    "role": "student",
+    "password": "1234",
+    "email": "bruno.busic@mail.com"
+  },
+  {
+    "firstName": "Nikola",
+    "lastName": "Nikolic",
+    "title": "dipl.ing.",
+    "role": "student",
+    "password": "1234",
+    "email": "nikola.nikolic@mail.com"
+  },
+  {
+    "firstName": "Frane",
+    "lastName": "Franic",
+    "title": "dipl.ing.",
+    "role": "student",
+    "password": "1234",
+    "email": "frane.franic@mail.com"
+  },
+  {
+    "firstName": "Kreso",
+    "lastName": "Kresic",
+    "title": "dipl.ing.",
+    "role": "student",
+    "password": "1234",
+    "email": "kreso.kresic@mail.com"
+  },
+  {
+    "firstName": "Anamarija",
+    "lastName": "Ancic",
+    "title": "dipl.ing.",
+    "role": "student",
+    "password": "1234",
+    "email": "anamarija.ancic@mail.com"
+  },
+  {
+    "firstName": "Duje",
+    "lastName": "Dujic",
+    "title": "dipl.ing.",
+    "role": "student",
+    "password": "1234",
+    "email": "duje.duijic@mail.com"
+  },
+  {
+    "firstName": "Toni",
+    "lastName": "Tonic",
+    "title": "dipl.ing.",
+    "role": "student",
+    "password": "1234",
+    "email": "toni.tonic@mail.com"
+  },
+  {
+    "firstName": "Mijo",
+    "lastName": "Mijic",
+    "title": "dipl.ing.",
+    "role": "student",
+    "password": "1234",
+    "email": "mijo.mijic@mail.com"
+  },
+  {
+    "firstName": "Marin",
+    "lastName": "Marcic",
+    "title": "dipl.ing.",
+    "role": "student",
+    "password": "1234",
+    "email": "ivan.ivic@mail.com"
+  },
+  {
+    "firstName": "Teo",
+    "lastName": "Teic",
+    "title": "dipl.ing.",
+    "role": "student",
+    "password": "1234",
+    "email": "teo.teic@mail.com"
+  },
+  {
+    "firstName": "Slaven",
+    "lastName": "Slavic",
+    "title": "dipl.ing.",
+    "role": "student",
+    "password": "1234",
+    "email": "slaven.slavic@mail.com"
+  },
+  {
+    "firstName": "Leo",
+    "lastName": "Leic",
+    "title": "dipl.ing.",
+    "role": "student",
+    "password": "1234",
+    "email": "leo.leic@mail.com"
+  },
+  {
+    "firstName": "Roko",
+    "lastName": "Rokic",
+    "title": "dipl.ing.",
+    "role": "student",
+    "password": "1234",
+    "email": "roko.rokic@mail.com"
+  },
+  {
+    "firstName": "Viktor",
+    "lastName": "Vikic",
+    "title": "dipl.ing.",
+    "role": "student",
+    "password": "1234",
+    "email": "ivan.ivic@mail.com"
+  },
+  {
+    "firstName": "Ognjen",
+    "lastName": "Ognjic",
+    "title": "dipl.ing.",
+    "role": "student",
+    "password": "1234",
+    "email": "ognjen.ognjic@mail.com"
+  }
+]

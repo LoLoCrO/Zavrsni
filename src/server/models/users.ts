@@ -1,6 +1,6 @@
 import mongoose, { Document, Schema } from "mongoose";
 
-interface IProfessorSchema extends Document {
+interface IUserSchema extends Document {
   _id: string;
   firstName: string;
   middleName?: string;
@@ -9,12 +9,9 @@ interface IProfessorSchema extends Document {
   role: string;
   email: string;
   password: string;
-  overallGrade?: number;
-  grades?: number[];
-  comments?: string[];
 }
 
-const ProfessorSchema: Schema = new Schema({
+const UserSchema: Schema = new Schema({
   _id: { type: String, require: true },
   firstName: { type: String, require: true },
   middleName: { type: String, require: false },
@@ -22,12 +19,7 @@ const ProfessorSchema: Schema = new Schema({
   title: { type: String, require: true },
   role: { type: String, require: true },
   email: { type: String, require: true },
-  overallGrade: { type: String, require: false },
-  grades: { type: [Number], require: false },
-  comments: { type: [String], require: false },
+  password: { type: String, require: true },
 });
 
-export const professors = mongoose.model<IProfessorSchema>(
-  "Professors",
-  ProfessorSchema
-);
+export const users = mongoose.model<IUserSchema>("Users", UserSchema);

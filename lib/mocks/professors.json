@@ -1,0 +1,42 @@
+[
+  {
+    "firstName": "Paolo",
+    "lastName": "Paolic",
+    "title": "Dr.sc.",
+    "role": "professor",
+    "password": "1234",
+    "email": "paolo.paolic@mail.com"
+  },
+  {
+    "firstName": "Julio",
+    "lastName": "Juilc",
+    "title": "Dr.sc.",
+    "role": "professor",
+    "password": "1234",
+    "email": "julio.julic@mail.com"
+  },
+  {
+    "firstName": "Ivica",
+    "lastName": "Ivic",
+    "title": "Dr.sc.",
+    "role": "professor",
+    "password": "1234",
+    "email": "ivica.ivic@mail.com"
+  },
+  {
+    "firstName": "Zlatko",
+    "lastName": "Zlatic",
+    "title": "Dr.sc.",
+    "role": "professor",
+    "password": "1234",
+    "email": "ognjen.ognjic@mail.com"
+  },
+  {
+    "firstName": "Ratko",
+    "lastName": "Ratkic",
+    "title": "Dr.sc.",
+    "role": "professor",
+    "password": "1234",
+    "email": "ognjen.ognjic@mail.com"
+  }
+]
