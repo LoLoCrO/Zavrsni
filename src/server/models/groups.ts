@@ -17,7 +17,7 @@ const GroupSchema: Schema = new Schema({
       firstName: { type: String, require: true },
       middleName: { type: String, require: false },
       lastName: { type: String, require: true },
-      title: { type: String, require: true },
+      title: { type: String, require: false },
       role: { type: String, require: true },
       email: { type: String, require: true },
       overallGrade: { type: Number, require: false },

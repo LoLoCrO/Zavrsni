@@ -11,6 +11,14 @@ const routes: Array<routesType> = [
   { role: "admin", path: "/adminhome", pageToRender: "adminHome" },
   { role: "admin", path: "/addstudents", pageToRender: "addStudents" },
   { role: "admin", path: "/addgroups", pageToRender: "addGroups" },
+  { role: "admin", path: "/populategroup", pageToRender: "populateGroup" },
+  {
+    role: "admin",
+    path: "/professorprofile",
+    pageToRender: "professorProfile",
+  },
 ];
+
+export const publicPaths = ["/login", "/api/auth", "/_next"];
 
 export default routes;

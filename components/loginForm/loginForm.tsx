@@ -33,7 +33,10 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = ({ onSubmit }: LoginF
             </StyledTypography>
             <Formik
                 initialValues={initialValues}
-                onSubmit={(values: LoginValues) => onSubmit(values)}
+                onSubmit={(values: LoginValues) =>{
+                    console.log(values)
+                    onSubmit(values)
+                    }}
             >
                 {({ values, handleChange, handleBlur }) => (
                     <StyledForm>

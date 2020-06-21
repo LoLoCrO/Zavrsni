@@ -7,6 +7,7 @@ import ShortID from 'shortid';
 import GroupMenu from '../components/groupMenu';
 import { StudentGroup } from '../src/ts/interfaces/studentGroup.interface';
 import AddGroupTabs from '../components/addGroupTabs';
+import axios from 'axios';
 
 const AddGroups: React.FunctionComponent = (): JSX.Element => {
 
@@ -29,17 +30,26 @@ const AddGroups: React.FunctionComponent = (): JSX.Element => {
         setOpen(true)
     }
 
-    const addOrEditGroup = ({ _id, name }: StudentGroup) => {
-        if (_id.length) {
-            const newGroups: StudentGroup[] = Object.assign([], groups);
-            newGroups.forEach((group: StudentGroup) => {
-                if (group._id === _id) {
-                    group.name = name;
-                }
-            });
-        } else {
-            setGroups([{ _id: ShortID.generate(), name }, ...groups]);
-        };
+    const addOrEditGroup = async ({ _id, name }: StudentGroup) => {
+        await axios({
+            method: 'post',
+            url: '/api/groups',
+            data: {
+                _id,
+                name
+            }
+        }).then((data) => console.log(data))
+            .catch((err) => console.log(err));
+        // if (_id.length) {
+        //     const newGroups: StudentGroup[] = Object.assign([], groups);
+        //     newGroups.forEach((group: StudentGroup) => {
+        //         if (group._id === _id) {
+        //             group.name = name;
+        //         }
+        //     });
+        // } else {
+        //     setGroups([{ _id: ShortID.generate(), name }, ...groups]);
+        // };
         setGroupName(null);
         handleClose();
     };

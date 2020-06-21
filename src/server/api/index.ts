@@ -3,14 +3,14 @@ import Groups from "./routes/groups";
 import Users from "./routes/users";
 import Professors from "./routes/professors";
 import Students from "./routes/students";
-import Login from "./routes/login";
+import Auth from "./routes/auth";
 
 const router = Router();
 
+Auth(router);
 Groups(router);
 Users(router);
 Professors(router);
 Students(router);
-Login(router);
 
 export default router;
