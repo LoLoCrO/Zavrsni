@@ -7,6 +7,8 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { professors } from '../lib/mocks/professors';
 import { Professor } from '../src/ts/interfaces/users.interface';
+import Link from 'next/link';
+import Router from 'next/router';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -65,7 +67,7 @@ const AdminTabExpansionPanels = ({ orderBy }: Props) => {
                 <Typography className={classes.secondaryHeading}>&ensp; Predavac</Typography>
             </ExpansionPanelSummary>
             {profs.map((prof: Professor, index: number) =>
-                <ExpansionPanelDetails key={index}>
+                <ExpansionPanelDetails key={index} onClick={() => Router.push('/professorProfile')}>
                     <Typography className={classes.heading}>
                         {orderBy === 2 ? prof.comments.length : prof.overallGrade}
                     </Typography>

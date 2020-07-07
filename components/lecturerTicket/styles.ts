@@ -21,11 +21,11 @@ export const LecturerPhoto = styled.div`
 export const LecturerInfo = styled.div`
   && {
     display: flex;
-    text-align: end;
+    text-align: start;
     height: 4rem;
     overflow: hidden;
     white-space: nowrap;
     align-items: flex-end;
-    align-self: flex-end;
+    align-self: flex-start;
   }
 `;

@@ -1,7 +1,6 @@
 import mongoose, { Document, Schema } from "mongoose";
-import { ProfessorMark } from "../../ts/interfaces/users.interface";
 
-interface IStudentSchema extends Document {
+interface IUserSchema extends Document {
   _id: string;
   firstName: string;
   middleName?: string;
@@ -10,30 +9,17 @@ interface IStudentSchema extends Document {
   role: string;
   email: string;
   password: string;
-  professorMarks?: ProfessorMark[];
 }
 
-const StudentSchema: Schema = new Schema({
+const AdminSchema: Schema = new Schema({
   _id: { type: String, require: true },
   firstName: { type: String, require: true },
   middleName: { type: String, require: false },
   lastName: { type: String, require: true },
-  title: { type: String, require: false },
+  title: { type: String, require: true },
   role: { type: String, require: true },
   email: { type: String, require: true },
   password: { type: String, require: true },
-  professorMarks: {
-    type: [
-      {
-        _id: { type: String, require: true },
-        marked: { type: Boolean, require: true },
-      },
-    ],
-    required: false,
-  },
 });
 
-export const students = mongoose.model<IStudentSchema>(
-  "Students",
-  StudentSchema
-);
+export const admins = mongoose.model<IUserSchema>("Admins", AdminSchema);

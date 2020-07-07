@@ -6,10 +6,8 @@ export const StyledPaper = styled(Paper)`
   && {
     margin: auto;
     margin-top: 15vh;
-    margin-bottom: 15vh;
     padding: 5vw;
     width: 80vw;
-    height: auto;
 
     @media (min-width: 768px) {
       padding-top: 3vw;

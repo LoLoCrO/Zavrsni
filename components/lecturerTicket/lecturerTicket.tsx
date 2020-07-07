@@ -4,7 +4,7 @@ import { LecturerBox, LecturerPhoto, LecturerInfo } from './styles';
 
 const LecturerTicket: React.FunctionComponent = (): JSX.Element =>
     <LecturerBox>
-        <LecturerPhoto>Slika</LecturerPhoto>
+        {/* <LecturerPhoto>Slika</LecturerPhoto> */}
         <LecturerInfo>
             Titula
             <br />

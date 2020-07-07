@@ -2,10 +2,16 @@ import express, { Request, Response } from "express";
 import next from "next";
 import parseArgs from "minimist";
 import bodyParser from "body-parser";
-import routes, { routesType } from "./routes";
+import {
+  routesType,
+  adminRoutes,
+  studentRoutes,
+  login,
+  publicPaths,
+} from "./routes";
 import mongoose from "mongoose";
 import router from "./api";
-import { connectionString } from "./config/serverSettings";
+import { connectionString, userRoles } from "./config/serverSettings";
 import { UAParser } from "ua-parser-js";
 import cors from "./middleware/cors";
 import authenticateToken from "./middleware/auth/authentication";
@@ -46,14 +52,26 @@ app.prepare().then(() => {
 
   const db = mongoose.connection;
 
-  server.use(bodyParser.json());
   server.use(cors);
-  server.use(authenticateToken);
-  server.use(authorizeUser);
+  server.use(bodyParser.json());
   server.use("/api", router);
 
-  routes.forEach(({ path, pageToRender }: routesType) =>
-    server.get(path, render(pageToRender))
+  adminRoutes.forEach(({ path, pageToRender }: routesType) =>
+    server.get(
+      path,
+      authenticateToken,
+      authorizeUser(userRoles.admin),
+      render(pageToRender)
+    )
+  );
+
+  studentRoutes.forEach(({ path, pageToRender }: routesType) =>
+    server.get(
+      path,
+      authenticateToken,
+      authorizeUser(userRoles.student),
+      render(pageToRender)
+    )
   );
 
   server.get("*", (req, res) => handle(req, res));

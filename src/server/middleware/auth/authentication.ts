@@ -3,13 +3,14 @@ import jwt from "jsonwebtoken";
 import { publicPaths } from "../../routes";
 
 const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
+ 
   if (req.path === "/" || publicPaths.find((path) => req.path.includes(path))) {
     console.log("1 - public");
     return next();
   }
 
   const authHeader = req.headers.authorization;
-  const token = authHeader && authHeader.split(" ")[1];
+  const token = authHeader && authHeader!.split(" ")[1];
 
   try {
     if (token) {

@@ -5,6 +5,7 @@ import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 import { IconButton } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { IGroupMenu } from '../../src/ts/interfaces/studentGroup.interface';
+import Router from 'next/router';
 
 const GroupMenu = ({ group: { _id }, openModal, removeGroup }: IGroupMenu): JSX.Element => {
 
@@ -31,7 +32,9 @@ const GroupMenu = ({ group: { _id }, openModal, removeGroup }: IGroupMenu): JSX.
                         >
                             Preimenuj
                         </MenuItem>
-                        <MenuItem onClick={popupState.close}>Uredi</MenuItem>
+                        <MenuItem onClick={() => Router.push('/populategroup')}>
+                            Uredi
+                        </MenuItem>
                         <MenuItem
                             color='secondary'
                             onClick={() => deleteGroup(popupState)}

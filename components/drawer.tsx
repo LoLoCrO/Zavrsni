@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { List, ListItem, ListItemText, Drawer, IconButton } from '@material-ui/core';
 import MenuSharpIcon from '@material-ui/icons/MenuSharp';
+import Router from 'next/router';
 
 const StyledIconButton = styled(IconButton)`
     && {
@@ -13,6 +14,12 @@ const StyledIconButton = styled(IconButton)`
 
 const TemporaryDrawer = () => {
     const [state, setState] = React.useState<boolean>(false);
+
+    const routes = [
+        { label: 'Grupe', route: '/addGroups' },
+        { label: 'Naslovna', route: '/adminHome' },
+        { label: 'Odjavi me', route: '/api/deauth' }
+    ];
 
     const toggleDrawer =
         (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -31,10 +38,14 @@ const TemporaryDrawer = () => {
             onKeyDown={toggleDrawer(false)}
         >
             <List>
-                {['Pocetna', 'Uredivanje predavca', 'Dodavanje predavaca', 'Odjavi me']
-                    .map((text: string) => (
-                        <ListItem button key={text}>
-                            <ListItemText primary={text} />
+                {routes
+                    .map(({ label, route }) => (
+                        <ListItem
+                            key={label}
+                            button
+                            onClick={() => Router.push(route)}
+                        >
+                            <ListItemText primary={label} />
                         </ListItem>
                     ))}
             </List>

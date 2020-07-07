@@ -34,9 +34,9 @@ const TabPanel = (props: TabPanelProps) => {
     );
 }
 
-const a11yProps = (index: any) => ({
-    id: `full-width-tab-${index}`,
-    'aria-controls': `full-width-tabpanel-${index}`,
+const tabProps = (label: string) => ({
+    id: `full-width-tab-${label}`,
+    'aria-controls': `full-width-tabpanel-${label}`,
 });
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -51,6 +51,7 @@ const FullWidthTabs = () => {
     const classes = useStyles();
     const theme = useTheme();
     const [value, setValue] = React.useState(0);
+    const tabs: string[] = ["Najvisa Ocjena", "Najniza Ocjena", "Najvise Komentara"];
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
@@ -59,6 +60,10 @@ const FullWidthTabs = () => {
     const handleChangeIndex = (index: number) => {
         setValue(index);
     };
+
+    const listTabs = (labels: string[]) =>
+        labels.map((label: string) =>
+            <Tab label={label} {...tabProps(label)} />)
 
     return (
         <div className={classes.root}>
@@ -71,9 +76,7 @@ const FullWidthTabs = () => {
                     variant="fullWidth"
                     aria-label="full width tabs example"
                 >
-                    <Tab label="Najvisa Ocjena" {...a11yProps(0)} />
-                    <Tab label="Najniza Ocjena" {...a11yProps(1)} />
-                    <Tab label="Najvise Komentara" {...a11yProps(2)} />
+                    {listTabs(tabs)}
                 </Tabs>
             </AppBar>
             <SwipeableViews
@@ -81,9 +84,9 @@ const FullWidthTabs = () => {
                 index={value}
                 onChangeIndex={handleChangeIndex}
             >
-                {[0, 1, 2].map((index: number) =>
+                {tabs.map((tab: string, index: number) =>
                     <TabPanel
-                        key={index}
+                        key={tab}
                         value={value}
                         index={index}
                         dir={theme.direction}

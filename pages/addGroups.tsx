@@ -31,6 +31,17 @@ const AddGroups: React.FunctionComponent = (): JSX.Element => {
     }
 
     const addOrEditGroup = async ({ _id, name }: StudentGroup) => {
+        if (_id.length) {
+            const newGroups: StudentGroup[] = Object.assign([], groups);
+            newGroups.forEach((group: StudentGroup) => {
+                if (group._id === _id) {
+                    group.name = name;
+                }
+            });
+            setGroups(newGroups);
+        } else {
+            setGroups([{ _id: ShortID.generate(), name }, ...groups]);
+        };
         await axios({
             method: 'post',
             url: '/api/groups',
@@ -38,18 +49,14 @@ const AddGroups: React.FunctionComponent = (): JSX.Element => {
                 _id,
                 name
             }
-        }).then((data) => console.log(data))
+        }).then((res) => {
+            if (res.data.success) {
+
+            }
+
+        })
             .catch((err) => console.log(err));
-        // if (_id.length) {
-        //     const newGroups: StudentGroup[] = Object.assign([], groups);
-        //     newGroups.forEach((group: StudentGroup) => {
-        //         if (group._id === _id) {
-        //             group.name = name;
-        //         }
-        //     });
-        // } else {
-        //     setGroups([{ _id: ShortID.generate(), name }, ...groups]);
-        // };
+
         setGroupName(null);
         handleClose();
     };

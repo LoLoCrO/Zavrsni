@@ -1,24 +1,23 @@
 require("dotenv").config();
 
-import { users } from "../../models/users";
+import { admins } from "../../models/admins";
+import { students } from "../../models/students";
 import { Router } from "express";
 import jwt from "jsonwebtoken";
 
 const Auth = (router: Router) => {
-  router.post("/auth", (req, res) => {
+  router.post("/auth", async (req, res) => {
     const { email, password } = req.body;
     console.log(req.body);
-    users
+    const admin = await admins
       .findOne({ email, password })
       .then(async (user) => {
         if (!user) {
+          return null;
+        } else if (user.password !== password) {
           return res.json({
-            message: `User: ${email + ` ` + password} not found`,
+            message: `Incorrect Password admin db pass: ${user.password} your: ${password}`,
           });
-        }
-        // @ts-ignore add password to user
-        else if (user.password !== password) {
-          return res.json({ message: "Incorrect Password" });
         } else {
           const token = jwt.sign(
             { email, password },
@@ -29,8 +28,34 @@ const Auth = (router: Router) => {
           return res.json({ token, user });
         }
       })
-      .catch((err) => console.log({ err }))
-      .finally(() => {});
+      .catch((err) => console.log({ err }));
+
+    if (!admin) {
+      students
+        .findOne({ email, password })
+        .exec()
+        .then((user) => {
+          if (!user) {
+            return res.json({
+              message: `User: ${email + ` ` + password} not found`,
+            });
+          } else {
+            if (user.password !== password) {
+              return res.json({
+                message: `Incorrect Password`,
+              });
+            }
+            const token = jwt.sign(
+              { email, password },
+              process.env.ACCESS_TOKEN_SECRET!,
+              { expiresIn: "1h" }
+            );
+            res.setHeader("Authorization", `Bearer ${token}`);
+            return res.json({ user });
+          }
+        })
+        .catch((err) => console.log({ err }));
+    }
   });
 };
 
