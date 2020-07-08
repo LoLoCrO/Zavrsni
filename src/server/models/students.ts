@@ -2,7 +2,7 @@ import mongoose, { Document, Schema } from "mongoose";
 import { ProfessorMark } from "../../ts/interfaces/users.interface";
 
 interface IStudentSchema extends Document {
-  _id: string;
+  _id: Schema.Types.ObjectId;
   firstName: string;
   middleName?: string;
   lastName: string;
@@ -14,7 +14,7 @@ interface IStudentSchema extends Document {
 }
 
 const StudentSchema: Schema = new Schema({
-  _id: { type: String, require: true },
+  _id: { type: Schema.Types.ObjectId, require: true },
   firstName: { type: String, require: true },
   middleName: { type: String, require: false },
   lastName: { type: String, require: true },
@@ -25,7 +25,7 @@ const StudentSchema: Schema = new Schema({
   professorMarks: {
     type: [
       {
-        _id: { type: String, require: true },
+        _id: { type: Schema.Types.ObjectId, require: true },
         marked: { type: Boolean, require: true },
       },
     ],

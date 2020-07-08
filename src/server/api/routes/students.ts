@@ -1,6 +1,7 @@
 import { students } from "../../models/students";
 import { Router } from "express";
 import { professors } from "../../models/professors";
+import mongoose from "mongoose";
 
 const Students = (router: Router) => {
   router.post("/students", (req, res) => {
@@ -37,10 +38,9 @@ const Students = (router: Router) => {
   });
 
   router.get("/students/lecturers", async (req, res) => {
-    console.log("Student id", req.query);
-
+    const { _id } = req.query;
     const student = await students
-      .findById({ _id: req.query._id })
+      .findById({ _id })
       .exec()
       .then((lecturers) => {
         console.log("lecturers aaaa", lecturers);
@@ -50,9 +50,8 @@ const Students = (router: Router) => {
         console.log(err, "2");
         return res.json({ err });
       });
-
-    console.log("STUDENT 0", student);
-
+    console.log("Student Query res", student);
+    return res.json(student);
     // if (student._id.length) {
     //   if (student.professorMarks) {
     //     const lecturersIDs: string[] = student.professorMarks.map(
@@ -79,31 +78,6 @@ const Students = (router: Router) => {
     //     // });
     //   }
     // }
-
-    // students
-    //   .find()
-    //   .sort({ lastName: 1 })
-    //   .exec()
-    //   .then((docs) => res.status(200).json(docs))
-    //   .catch((err) =>
-    //     res.status(500).json({
-    //       message: "Error getting students",
-    //       error: err,
-    //     })
-    //   );
-  });
-
-  router.get("/students/:id", (_req, res) => {
-    students
-      .find({ _id: _req.params.id })
-      .exec()
-      .then((docs) => res.status(200).json(docs))
-      .catch((err) =>
-        res.status(500).json({
-          message: "Error getting student",
-          error: err,
-        })
-      );
   });
 
   router.post("/students/:id", (req, res) => {

@@ -37,7 +37,7 @@ const StudentHome: NextPage = (props: any) => {
 
 StudentHome.getInitialProps = async ({ query }: any) => {
 
-    console.log("StudentHome query", JSON.parse(query.user));
+    console.log("StudentHome query", query);
 
     const { _id } = await JSON.parse(query.user);
 
@@ -45,9 +45,18 @@ StudentHome.getInitialProps = async ({ query }: any) => {
         params: {
             _id
         }
-    });
-    // const lecturers = res;
-    console.log('axios lecturers', res)
+    })
+        .then(res => {
+            console.log(res)
+            return res;
+        })
+        .catch(err => {
+            console.log(err)
+            return null;
+        });
+
+    await console.log('axios lecturers', res)
+
     return {
         props: {
 
