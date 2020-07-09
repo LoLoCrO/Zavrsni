@@ -32,7 +32,11 @@ const MemberMenu = ({ member, openModal, remove }: IMemberMenu): JSX.Element => 
                         >
                             Preimenuj
                         </MenuItem>
-                        <MenuItem onClick={popupState.close}>Uredi</MenuItem>
+                        <MenuItem
+                            onClick={() => rename(popupState)}
+                        >
+                            Dodaj
+                         </MenuItem>
                         <MenuItem
                             color='secondary'
                             onClick={() => deleteMember(popupState)}

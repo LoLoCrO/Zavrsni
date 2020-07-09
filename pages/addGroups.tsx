@@ -3,20 +3,19 @@ import { DrawerBox, StyledPaper, useStyles } from '../lib/styles/addGroups';
 import Drawer from '../components/drawer';
 import { Grid, Paper } from '@material-ui/core';
 import GroupModal from '../components/groupModal';
-import ShortID from 'shortid';
 import GroupMenu from '../components/groupMenu';
 import { StudentGroup } from '../src/ts/interfaces/studentGroup.interface';
 import AddGroupTabs from '../components/addGroupTabs';
 import axios from 'axios';
+import { NextPage } from 'next';
 
-const AddGroups: React.FunctionComponent = (): JSX.Element => {
-
+const AddGroups: NextPage = ({ fetchedGroups }: any): JSX.Element => {
     const classes = useStyles();
 
     const [open, setOpen] = React.useState<boolean>(false);
     const [search, setToSearch] = React.useState<boolean>(false);
     const [groupName, setGroupName] = React.useState<StudentGroup | null>(null);
-    const [groups, setGroups] = React.useState<StudentGroup[]>([]);
+    const [groups, setGroups] = React.useState<StudentGroup[]>(fetchedGroups);
     const [searchValue, setSearchValue] = React.useState<string>('');
 
     const handleClose = () => setOpen(false);
@@ -31,39 +30,60 @@ const AddGroups: React.FunctionComponent = (): JSX.Element => {
     }
 
     const addOrEditGroup = async ({ _id, name }: StudentGroup) => {
-        if (_id.length) {
-            const newGroups: StudentGroup[] = Object.assign([], groups);
-            newGroups.forEach((group: StudentGroup) => {
-                if (group._id === _id) {
-                    group.name = name;
-                }
-            });
-            setGroups(newGroups);
-        } else {
-            setGroups([{ _id: ShortID.generate(), name }, ...groups]);
-        };
+        if (!_id && groups.find(group => group.name === name)) {
+            alert("Ime vec postoji!");
+            return;
+        }
         await axios({
             method: 'post',
-            url: '/api/groups',
+            url: `/api/groups/${_id ? 'update' : 'new'}`,
             data: {
-                _id,
+                ...(_id ? { _id } : {}),
                 name
             }
         }).then((res) => {
-            if (res.data.success) {
-
+            if (!res.data.success) {
+                return alert('Doslo je do pogreske!');
             }
-
+            const { group } = res.data;
+            delete group['__v'];
+            console.log(group)
+            const newGroups: StudentGroup[] = Object.assign([], [
+                group,
+                ...groups.filter((g: StudentGroup) => g.name.length < 1 || g._id !== group._id)
+            ]);
+            return setGroups(newGroups);
         })
-            .catch((err) => console.log(err));
-
+            .catch((err) => {
+                console.log(err);
+                return alert('Doslo je do pogreske!');
+            });
         setGroupName(null);
         handleClose();
     };
 
-    const removeGroup = (id: string) =>
-        setGroups(Object.assign([], groups)
-            .filter(({ _id }: StudentGroup) => _id !== id));
+    const removeGroup = async (id: string) => {
+        if (!id) {
+            alert("Doslo je do pogreske!");
+            return;
+        }
+        await axios({
+            method: 'delete',
+            url: `/api/groups`,
+            data: {
+                _id: id
+            }
+        }).then((res) => {
+            if (!res.data.success) {
+                return alert('Doslo je do pogreske!');
+            }
+            setGroups(Object.assign([], groups)
+                .filter(({ _id }: StudentGroup) => _id !== id))
+        }).catch((err) => {
+            console.log(err);
+            return alert('Doslo je do pogreske!');
+        });
+    };
 
     const FormRow = (studentGroups: StudentGroup[]) =>
         studentGroups.map((group: StudentGroup, index: number) =>
@@ -118,6 +138,23 @@ const AddGroups: React.FunctionComponent = (): JSX.Element => {
             </StyledPaper>
         </React.Fragment>
     );
+}
+
+AddGroups.getInitialProps = async () => {
+
+    const res = await axios.get('http://localhost:3000/api/groups/all')
+        .then(res => res)
+        .catch(err => {
+            console.log(err)
+            return err;
+        });
+
+    return {
+        fetchedGroups: res.data.map((group: any) => {
+            delete group['__v'];
+            return group;
+        })
+    }
 }
 
 export default AddGroups;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { DrawerBox, StyledPaper, useStyles } from '../lib/styles/addGroups';
 import Drawer from '../components/drawer';
-import { Grid, Paper, Button, } from '@material-ui/core';
+import { Paper, Button, } from '@material-ui/core';
 import MemberModal from '../components/memberModal';
 import { professors } from '../lib/mocks/professors';
 import { Student } from '../src/ts/interfaces/users.interface';
@@ -10,55 +10,32 @@ import MemberMenu from '../components/memberMenu';
 import { Professor } from '../src/ts/interfaces/users.interface';
 import AddPersons from '../components/addPersons';
 import { Title } from '../lib/styles/adminHome';
-import styled from 'styled-components';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import { StyledItem, StyledTicket, StyledLecturer, StyledGrid } from '../lib/styles/populategroup';
+import axios from 'axios';
+import { NextPage } from 'next';
+import Router from 'next/router';
 
-const StyledGrid = styled(Grid)`
-    && {
-        padding: 1rem;
-    }
-`;
 
-const StyledItem = styled(Grid)`
-    && {
-        padding-left: 1rem;
-        display: flex;
-        justify-content: space-between;
-    }
-`;
-
-const StyledTicket = styled(Paper)`
-    && {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        justify-content: center;
-    }
-`;
-
-const StyledLecturer = styled.div`
-    && {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        justify-content: center;
-    }
-`;
-
-const PopulateGroup: React.FunctionComponent = (): JSX.Element => {
+const PopulateGroup: NextPage = ({ group }: any): JSX.Element => {
 
     const classes = useStyles();
 
     const initialMember: Member = { _id: '', role: 'none', email: '' };
 
-    const [lecturer, setLecturer] = React.useState<Professor>(professors[0]);
+    const [lecturer, setLecturer] = React.useState<Professor>(
+        group.lecturer ? group.lecturer : initialMember
+    );
     const [open, setOpen] = React.useState<boolean>(false);
     const [search, setToSearch] = React.useState<boolean>(false);
     const [member, setMember] = React.useState<Member>(initialMember);
-    const [currentGroup, setCurrentGroup] = React.useState<Student[]>([]);
+    const [currentGroup, setCurrentGroup] = React.useState<Student[]>(
+        group.students ? group.students : []
+    );
     const [searchValue, setSearchValue] = React.useState<string>('');
 
     React.useEffect(() => console.log(currentGroup), [currentGroup])
+    React.useEffect(() => console.log(lecturer), [lecturer])
 
     const handleClose = () => setOpen(false);
 
@@ -68,6 +45,7 @@ const PopulateGroup: React.FunctionComponent = (): JSX.Element => {
     }
 
     const edit = ({ _id, role, email }: Member) => {
+        console.log({ _id, role, email })
         if (role === 'student') {
             const newStudents: Student[] = Object.assign([], currentGroup);
             newStudents.forEach((student: Student) => {
@@ -160,7 +138,7 @@ const PopulateGroup: React.FunctionComponent = (): JSX.Element => {
             </DrawerBox>
             <StyledPaper elevation={3}>
                 <Title>
-                    Grupa 550
+                    {group.name}
                 </Title>
                 <AddPersons
                     setToSearch={setToSearch}
@@ -179,15 +157,16 @@ const PopulateGroup: React.FunctionComponent = (): JSX.Element => {
                     </Title>
                     <StyledItem>
                         <StyledLecturer>
-                            {
+                            {lecturer._id.length > 0 ?
                                 `${lecturer.title ? `${lecturer.title} ` : ` `}` +
                                 lecturer.firstName + ` ` +
                                 `${lecturer.middleName ? ` ${lecturer.middleName} ` : ` `}` +
                                 lecturer.lastName + ` ` +
                                 lecturer.email
+                                : `Dodajte predavaca ->`
                             }
                         </StyledLecturer>
-                        {MemberMenu({ member: lecturer, openModal, remove })}
+                        {MemberMenu({ member: { ...lecturer, role: 'professor' }, openModal, remove })}
                     </StyledItem>
                 </Paper>
                 <Title color='secondary'>
@@ -199,6 +178,37 @@ const PopulateGroup: React.FunctionComponent = (): JSX.Element => {
             </StyledPaper>
         </React.Fragment >
     );
+}
+
+PopulateGroup.getInitialProps = async ({ query }: any) => {
+
+    const { _id } = query;
+
+    if (!_id) {
+        Router.push('/addGroups');
+    }
+
+    const group = await axios.get('http://localhost:3000/api/groups', {
+        params: {
+            _id
+        }
+    })
+        .then(res => {
+            if (!res.data.success) {
+                alert('Doslo je do pogreske!')
+                console.log(res)
+            }
+            return res.data.group;
+        })
+        .catch(err => {
+            alert('Doslo je do pogreske!')
+            console.log(err)
+            return null;
+        });
+
+    return {
+        group
+    };
 }
 
 export default PopulateGroup;

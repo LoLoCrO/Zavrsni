@@ -32,7 +32,14 @@ const GroupMenu = ({ group: { _id }, openModal, removeGroup }: IGroupMenu): JSX.
                         >
                             Preimenuj
                         </MenuItem>
-                        <MenuItem onClick={() => Router.push('/populategroup')}>
+                        <MenuItem
+                            onClick={() => Router.push({
+                                pathname: '/populateGroup',
+                                query: {
+                                    _id
+                                }
+                            })}
+                        >
                             Uredi
                         </MenuItem>
                         <MenuItem

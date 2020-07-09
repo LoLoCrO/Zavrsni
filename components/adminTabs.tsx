@@ -67,7 +67,7 @@ const FullWidthTabs = () => {
 
     return (
         <div className={classes.root}>
-            <AppBar position="static" color="default">
+            <AppBar position="static" color="transparent">
                 <Tabs
                     value={value}
                     onChange={handleChange}

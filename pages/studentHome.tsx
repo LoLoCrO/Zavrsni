@@ -4,10 +4,36 @@ import LecturerTicket from '../components/lecturerTicket';
 import { StyledPaper, Title, StyledContainer, Ticket } from '../lib/styles/studentHome';
 import axios from 'axios';
 import { NextPage } from 'next';
+import { Typography } from '@material-ui/core';
 
-const StudentHome: NextPage = (props: any) => {
-    console.log('StudentHomeProps', props);
-    const list: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const StudentHome: NextPage = (context: any) => {
+    console.log('student', context);
+
+    const list: any[] = context.professorMarks;
+
+    const displayLecturers = () => list.length < 1 ?
+        <Typography
+            gutterBottom
+            variant='subtitle1'
+            align='center'
+        >
+            Lista je trenutno prazna.
+        </Typography>
+        : list.map((num: number) =>
+            <Link
+                key={num}
+                href={{
+                    pathname: '/questionnaire',
+                    // query: { object: JSON.stringify(object) }
+                }}>
+                <Ticket elevation={3}>
+                    <LecturerTicket>
+                        {num}
+                    </LecturerTicket>
+                </Ticket>
+            </Link>
+        )
+
 
     return (
         <StyledPaper elevation={3}>
@@ -15,20 +41,7 @@ const StudentHome: NextPage = (props: any) => {
                 Vaši predavači
             </Title>
             <StyledContainer>
-                {list.map((num: number) =>
-                    <Link
-                        key={num}
-                        href={{
-                            pathname: '/questionnaire',
-                            // query: { object: JSON.stringify(object) }
-                        }}>
-                        <Ticket elevation={3}>
-                            <LecturerTicket>
-                                {num}
-                            </LecturerTicket>
-                        </Ticket>
-                    </Link>
-                )}
+                {displayLecturers()}
             </StyledContainer>
         </StyledPaper>
     );
@@ -52,16 +65,12 @@ StudentHome.getInitialProps = async ({ query }: any) => {
         })
         .catch(err => {
             console.log(err)
-            return null;
+            return err;
         });
 
-    await console.log('axios lecturers', res)
+    console.log('axios lecturers', res.data)
 
-    return {
-        props: {
-
-        },
-    }
+    return res.data;
 }
 
 export default StudentHome;

@@ -2,18 +2,18 @@ import mongoose, { Document, Schema } from "mongoose";
 import { Professor, Student } from "../../ts/interfaces/users.interface";
 
 interface IGroupSchema extends Document {
-  _id: string;
+  _id: Schema.Types.ObjectId;
   name: string;
   lecturer?: Professor;
   students?: Student[];
 }
 
 const GroupSchema: Schema = new Schema({
-  _id: { type: String, require: true },
+  _id: { type: Schema.Types.ObjectId, require: false },
   name: { type: String, require: true },
   lecturer: {
     type: {
-      _id: { type: String, require: true },
+      _id: { type: Schema.Types.ObjectId, require: true },
       firstName: { type: String, require: true },
       middleName: { type: String, require: false },
       lastName: { type: String, require: true },
@@ -24,12 +24,12 @@ const GroupSchema: Schema = new Schema({
       grades: { type: [Number], require: false },
       comments: { type: [String], require: false },
     },
-    require: true,
+    require: false,
   },
   students: {
     type: [
       {
-        _id: { type: String, require: true },
+        _id: { type: Schema.Types.ObjectId, require: true },
         firstName: { type: String, require: true },
         middleName: { type: String, require: false },
         lastName: { type: String, require: true },
@@ -38,7 +38,7 @@ const GroupSchema: Schema = new Schema({
         email: { type: String, require: true },
       },
     ],
-    require: true,
+    require: false,
   },
 });
 

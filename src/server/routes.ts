@@ -27,14 +27,19 @@ export const studentRoutes: Array<routesType> = [
 export const adminRoutes: Array<routesType> = [
   { role: "admin", path: "/adminhome", pageToRender: "adminHome" },
   { role: "admin", path: "/addstudents", pageToRender: "addStudents" },
-  { role: "admin", path: "/addgroups", pageToRender: "addGroups" },
-  { role: "admin", path: "/populategroup", pageToRender: "populateGroup" },
+  // { role: "admin", path: "/addgroups", pageToRender: "addGroups" },
+  // { role: "admin", path: "/populategroup", pageToRender: "populateGroup" },
   {
     role: "admin",
     path: "/professorprofile",
     pageToRender: "professorProfile",
   },
 ];
+export const groups = {
+  role: "admin",
+  path: "/addgroups",
+  pageToRender: "addGroups",
+};
 export const login = { role: "public", path: "/login", pageToRender: "login" };
 export const publicPaths = ["/login", "/api/auth", "/_next"];
 
