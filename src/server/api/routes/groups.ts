@@ -1,4 +1,6 @@
 import { groups } from "../../models/groups";
+import { students } from "../../models/students";
+import { professors } from "../../models/professors";
 import { Router } from "express";
 import mongoose from "mongoose";
 
@@ -26,20 +28,17 @@ const Groups = (router: Router) => {
       const newGroup = new groups({ _id: new mongoose.mongo.ObjectID(), name });
 
       if (!newGroup) {
-        console.log("Groups route, no Group created line 17");
         return res.send({ success: false });
       }
 
       newGroup.save((err, group) => {
         if (err) {
-          console.log(err);
           return res.json({
             success: false,
             err,
             message: "Error!",
           });
         }
-        console.log(group + " saved to groups collection.");
         return res.json({
           success: true,
           group,
@@ -126,7 +125,7 @@ const Groups = (router: Router) => {
       );
   });
 
-  router.get("/groups", (req, res) => {
+  router.get("/groups", async (req, res) => {
     const { _id } = req.query;
 
     if (!_id) {
@@ -135,17 +134,152 @@ const Groups = (router: Router) => {
         error: "You must provide a Group!",
       });
     }
-    groups
+    const getGroup = await groups
       .findById({ _id })
       .exec()
-      .then((group) => res.status(200).json({ success: true, group }))
-      .catch((err) =>
-        res.status(500).json({
-          success: false,
-          message: "Error getting group",
-          error: err,
-        })
+      .then(async (group) => {
+        const groupWithStudents = await students
+          .find({
+            _id: {
+              // @ts-ignore
+              $in: group?.students?.map(
+                (s: any) => new mongoose.Types.ObjectId(s._id)
+              ),
+            },
+          })
+          .then((docs: any) => {
+            return { group, groupStudents: docs };
+          });
+        return groupWithStudents;
+      })
+      .then(async (doc) => {
+        console.log("Doc", doc, doc.group?.lecturer, doc.group?.lecturer?._id);
+        const groupWithLecturer = await professors
+          .findOne({
+            // @ts-ignore
+            _id: new mongoose.Schema.Types.ObjectId(doc.group?.lecturer),
+          })
+          .lean()
+          .exec()
+          .then((docs: any) => {
+            console.log("Lecturer", doc.group.lecturer, docs);
+            return { success: true, ...doc, lecturer: docs };
+          });
+        return groupWithLecturer;
+      })
+      .catch((err) => ({
+        success: false,
+        message: "Error getting group",
+        error: err,
+      }));
+
+    if (!getGroup.success) {
+      return res.status(500).json(getGroup);
+    }
+
+    const allStudents = await students
+      .find()
+      .sort({ firstName: 1 })
+      .exec()
+      .then((students) => ({ success: true, students }))
+      .catch((err) => ({
+        success: false,
+        message: "Error getting groups",
+        error: err,
+      }));
+
+    if (!allStudents.success) {
+      return res.status(500).json(allStudents);
+    }
+
+    const allProfessors = await professors
+      .find()
+      .sort({ firstName: 1 })
+      .exec()
+      .then((professors) => ({ success: true, professors }))
+      .catch((err) => ({
+        success: false,
+        message: "Error getting groups",
+        error: err,
+      }));
+
+    if (!allProfessors.success) {
+      return res.status(500).json(allProfessors);
+    }
+
+    return res.status(200).json({
+      getGroup,
+      allStudents,
+      allProfessors,
+      success: true,
+    });
+  });
+
+  router.post("/groups/populate", async (req, res) => {
+    const { group } = req.body;
+    console.log("Ulaz", group);
+
+    const newGroup = await groups
+      .findByIdAndUpdate(
+        { _id: group._id },
+        {
+          $set: {
+            lecturer: group.lecturer._id,
+            students: group.students.map(
+              (s: any) => new mongoose.Types.ObjectId(s._id)
+            ),
+          },
+        }
+      )
+      .then((g: any) => {
+        // console.log("findone");
+        // console.log(group);
+        // g.lecturer.set(group.lecturer._id);
+        // group.students.forEach((s: any) =>
+        //   g.students.push(new mongoose.Schema.Types.ObjectId(s._id))
+        // );
+        // g.save();
+        return g;
+      })
+      .catch(
+        (err) => console.log(err)
+        // res.json({
+        //   message: "Error updating group!",
+        //   error: err,
+        // })
       );
+
+    console.log(newGroup);
+    if (
+      newGroup &&
+      newGroup.lecturer &&
+      newGroup.lecturer._id.length &&
+      newGroup.students?.length
+    ) {
+      students
+        .updateMany(
+          {
+            _id: {
+              $in: group.students.map(
+                (student: any) => student._id
+                // new mongoose.Schema.Types.ObjectId(student._id)
+              ),
+            },
+          },
+          {
+            $push: {
+              professorMarks: {
+                ProfessorId: newGroup.lecturer._id,
+                marked: false,
+              },
+            },
+          }
+        )
+        .then((data) => console.log("Izlaz studenata", data))
+        .catch((err) => console.log(err));
+    }
+    // res.status(200).json({ success: true, group })
+    // return res.json({ success: true, group });
   });
 
   // router.post("/groups/:id", (req, res) => {

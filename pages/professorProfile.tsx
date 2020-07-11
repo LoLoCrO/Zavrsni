@@ -77,13 +77,16 @@ const StudentHome: React.FunctionComponent = (): JSX.Element => {
                                 >
                                     <StyledBox fontSize={16}>Komentari</StyledBox>
                                 </ExpansionPanelSummary>
-                                {professor.comments.map((comment: string, index: number) =>
-                                    <ExpansionPanelDetails key={index}>
-                                        <StyledBox>
-                                            {comment}
-                                        </StyledBox>
-                                    </ExpansionPanelDetails>
-                                )}
+                                {
+                                    // @ts-ignore
+                                    professor.comments.map((comment: string, index: number) =>
+                                        <ExpansionPanelDetails key={index}>
+                                            <StyledBox>
+                                                {comment}
+                                            </StyledBox>
+                                        </ExpansionPanelDetails>
+                                    )
+                                }
                             </ExpansionPanel>
                         </div>
                 }

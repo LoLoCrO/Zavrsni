@@ -3,11 +3,11 @@ import { Form, Formik } from "formik";
 import { useStyles } from './styles';
 import { MemberModalBody } from "../../src/ts/interfaces/member.interface";
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { professors } from "../../lib/mocks/professors";
+// import { professors } from "../../lib/mocks/professors";
 import { Person } from "../../src/ts/interfaces/users.interface";
-import { students } from "../../lib/mocks/students";
+// import { students } from "../../lib/mocks/students";
 
-const Body = ({ handleClose, member, edit }: MemberModalBody): JSX.Element => {
+const Body = ({ handleClose, member, edit, students, professors }: MemberModalBody): JSX.Element => {
 
     const classes = useStyles();
     const roleMembers: any = member.role === "professor" ? professors : students;
@@ -20,7 +20,7 @@ const Body = ({ handleClose, member, edit }: MemberModalBody): JSX.Element => {
                 variant='h5'
                 className={classes.title}
             >
-                Promijeni predavaca:
+                Promjeni predavaca:
             </Typography>
             <Formik
                 initialValues={member}

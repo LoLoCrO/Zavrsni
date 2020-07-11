@@ -8,8 +8,10 @@ export interface StudentGroup {
 }
 
 export interface AddStudentsForm {
+  students: Student[];
   currentGroup: Student[];
   add: (student: Student) => void;
+  save: () => any;
 }
 
 export interface IBody {

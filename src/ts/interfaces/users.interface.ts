@@ -9,14 +9,12 @@ export interface Person {
 }
 
 export interface Professor extends Person {
-  overallGrade: number;
-  grades: number[];
-  comments: string[];
+  overallGrade?: number;
+  grades?: number[];
+  comments?: string[];
 }
 
 export interface Student extends Person {
-  _id: string;
-  email: string;
   professorMarks?: ProfessorMark[];
 }
 

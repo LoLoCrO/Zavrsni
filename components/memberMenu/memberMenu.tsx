@@ -6,10 +6,10 @@ import { IconButton } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { IMemberMenu } from '../../src/ts/interfaces/member.interface';
 
-const MemberMenu = ({ member, openModal, remove }: IMemberMenu): JSX.Element => {
+const MemberMenu = ({ member, openModal, removeLecturer }: IMemberMenu): JSX.Element => {
 
     const deleteMember = ({ close }: any) => {
-        remove(member._id);
+        removeLecturer();
         close();
     }
 
@@ -27,16 +27,21 @@ const MemberMenu = ({ member, openModal, remove }: IMemberMenu): JSX.Element => 
                         <MoreVertIcon color='primary' />
                     </IconButton>
                     <Menu {...bindMenu(popupState)}>
-                        <MenuItem
-                            onClick={() => rename(popupState)}
-                        >
-                            Preimenuj
-                        </MenuItem>
-                        <MenuItem
-                            onClick={() => rename(popupState)}
-                        >
-                            Dodaj
-                         </MenuItem>
+
+                        {
+                            // @ts-ignore
+                            member._id.length ?
+                                <MenuItem
+                                    onClick={() => rename(popupState)}
+                                >
+                                    Promjeni
+                                </MenuItem> :
+                                <MenuItem
+                                    onClick={() => rename(popupState)}
+                                >
+                                    Dodaj
+                                </MenuItem>
+                        }
                         <MenuItem
                             color='secondary'
                             onClick={() => deleteMember(popupState)}

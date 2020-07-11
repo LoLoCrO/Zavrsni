@@ -2,13 +2,7 @@ import express, { Request, Response } from "express";
 import next from "next";
 import parseArgs from "minimist";
 import bodyParser from "body-parser";
-import {
-  routesType,
-  adminRoutes,
-  studentRoutes,
-  login,
-  publicPaths,
-} from "./routes";
+import { routesType, adminRoutes, studentRoutes } from "./routes";
 import mongoose from "mongoose";
 import router from "./api";
 import { connectionString, userRoles } from "./config/serverSettings";

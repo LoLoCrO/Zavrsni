@@ -4,6 +4,7 @@ import Drawer from '../components/drawer';
 import { Paper, Button, } from '@material-ui/core';
 import MemberModal from '../components/memberModal';
 import { professors } from '../lib/mocks/professors';
+import { students } from '../lib/mocks/students';
 import { Student } from '../src/ts/interfaces/users.interface';
 import { Member } from '../src/ts/interfaces/member.interface';
 import MemberMenu from '../components/memberMenu';
@@ -17,14 +18,17 @@ import { NextPage } from 'next';
 import Router from 'next/router';
 
 
-const PopulateGroup: NextPage = ({ group }: any): JSX.Element => {
+const PopulateGroup: NextPage = ({ group }: any): JSX.Element => { //students, professors
 
     const classes = useStyles();
 
     const initialMember: Member = { _id: '', role: 'none', email: '' };
+    const initialLecturer: Professor = {
+        _id: '', role: 'professor', email: '', firstName: '', lastName: ''
+    };
 
     const [lecturer, setLecturer] = React.useState<Professor>(
-        group.lecturer ? group.lecturer : initialMember
+        group.lecturer ? group.lecturer : initialLecturer
     );
     const [open, setOpen] = React.useState<boolean>(false);
     const [search, setToSearch] = React.useState<boolean>(false);
@@ -44,22 +48,11 @@ const PopulateGroup: NextPage = ({ group }: any): JSX.Element => {
         setOpen(true)
     }
 
-    const edit = ({ _id, role, email }: Member) => {
-        console.log({ _id, role, email })
-        if (role === 'student') {
-            const newStudents: Student[] = Object.assign([], currentGroup);
-            newStudents.forEach((student: Student) => {
-                if (student._id === _id) {
-                    student.email = email;
-                }
-            });
-            setCurrentGroup(newStudents);
-        } else {
-            const newLecturer = professors.find((professor: Professor) => professor._id === _id);
-            if (newLecturer) {
-                console.log('Dodajem: ', newLecturer);
-                setLecturer(newLecturer);
-            }
+    const edit = ({ _id }: Member) => {
+        const newLecturer = professors.find((professor: Professor) => professor._id === _id);
+        if (newLecturer) {
+            console.log('Dodajem: ', newLecturer);
+            setLecturer(newLecturer);
         }
         setMember(initialMember);
         setOpen(false);
@@ -71,6 +64,26 @@ const PopulateGroup: NextPage = ({ group }: any): JSX.Element => {
             setOpen(false);
         }
     };
+
+    const save = async () =>
+        await axios.post('http://localhost:3000/api/groups/populate', {
+            group: Object.assign({},
+                (lecturer._id.length ? group : (delete group.lecturer, group)), {
+                students: currentGroup,
+                ...(lecturer._id.length ? { lecturer } : {}),
+            })
+        }).then(res => {
+            if (!res.data.success) {
+                alert('Doslo je do pogreske!')
+                console.log(res.data.success)
+            }
+            return Router.push('/addGroups');
+        }).catch(err => {
+            alert('Doslo je do pogreske!')
+            console.log(err);
+        });
+
+    const removeLecturer = () => setLecturer(initialLecturer);
 
     const remove = (id: string) =>
         setCurrentGroup(Object.assign([], currentGroup)
@@ -87,7 +100,7 @@ const PopulateGroup: NextPage = ({ group }: any): JSX.Element => {
                     student.email}`;
 
                 console.log(student);
-                if (student._id.length) {
+                if (student && student._id && student._id.length) {
                     return (
                         <StyledItem
                             item
@@ -132,6 +145,8 @@ const PopulateGroup: NextPage = ({ group }: any): JSX.Element => {
                 member={member}
                 handleClose={handleClose}
                 edit={edit}
+                students={students}
+                professors={professors}
             />
             <DrawerBox>
                 <Drawer />
@@ -143,9 +158,11 @@ const PopulateGroup: NextPage = ({ group }: any): JSX.Element => {
                 <AddPersons
                     setToSearch={setToSearch}
                     add={add}
+                    save={save}
                     currentGroup={currentGroup}
                     searchValue={searchValue}
                     setSearchValue={setSearchValue}
+                    students={students}
                 />
                 <Paper
                     className={classes.paper}
@@ -157,16 +174,16 @@ const PopulateGroup: NextPage = ({ group }: any): JSX.Element => {
                     </Title>
                     <StyledItem>
                         <StyledLecturer>
-                            {lecturer._id.length > 0 ?
+                            {lecturer && lecturer._id && lecturer._id.length > 0 ?
                                 `${lecturer.title ? `${lecturer.title} ` : ` `}` +
                                 lecturer.firstName + ` ` +
                                 `${lecturer.middleName ? ` ${lecturer.middleName} ` : ` `}` +
                                 lecturer.lastName + ` ` +
                                 lecturer.email
-                                : `Dodajte predavaca ->`
+                                : `Dodaj predavaca ->`
                             }
                         </StyledLecturer>
-                        {MemberMenu({ member: { ...lecturer, role: 'professor' }, openModal, remove })}
+                        {MemberMenu({ member: { ...lecturer, role: 'professor' }, openModal, removeLecturer })}
                     </StyledItem>
                 </Paper>
                 <Title color='secondary'>
@@ -180,15 +197,19 @@ const PopulateGroup: NextPage = ({ group }: any): JSX.Element => {
     );
 }
 
-PopulateGroup.getInitialProps = async ({ query }: any) => {
+PopulateGroup.getInitialProps = async ({ query, res }: any) => {
 
     const { _id } = query;
 
     if (!_id) {
-        Router.push('/addGroups');
+        res.redirect('/addGroups');
     }
 
-    const group = await axios.get('http://localhost:3000/api/groups', {
+    const {
+        // allProfessors: { professors },
+        // allStudents: { students },
+        getGroup: { group, groupStudents, groupLecturer }
+    } = await axios.get('http://localhost:3000/api/groups', {
         params: {
             _id
         }
@@ -198,16 +219,21 @@ PopulateGroup.getInitialProps = async ({ query }: any) => {
                 alert('Doslo je do pogreske!')
                 console.log(res)
             }
-            return res.data.group;
+            return res.data;
         })
         .catch(err => {
             alert('Doslo je do pogreske!')
             console.log(err)
             return null;
         });
+    await console.log(group, groupStudents, groupLecturer)
 
     return {
-        group
+        group,
+        groupStudents,
+        groupLecturer,
+        // students,
+        // professors
     };
 }
 

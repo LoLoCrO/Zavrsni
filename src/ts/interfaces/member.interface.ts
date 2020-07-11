@@ -10,6 +10,8 @@ export interface MemberModalBody {
   member: Member | Person | Student | Professor;
   handleClose: () => void;
   edit: (member: Member | Person | Student | Professor) => void;
+  students: Student[];
+  professors: Professor[];
 }
 
 export interface IAddForm {
@@ -21,7 +23,7 @@ export interface IAddForm {
 export interface IMemberMenu {
   member: Member | Person | Student | Professor;
   openModal: (member: Member | Person | Student | Professor) => void;
-  remove: (id: string) => void;
+  removeLecturer: () => void;
 }
 
 export interface IMemberModal {
@@ -29,4 +31,6 @@ export interface IMemberModal {
   member: Member | Person | Student | Professor;
   handleClose: () => void;
   edit: (member: Member | Person | Student | Professor) => void;
+  students: Student[];
+  professors: Professor[];
 }

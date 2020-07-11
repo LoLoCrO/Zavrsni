@@ -46,62 +46,63 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-const AddPersons = ({ currentGroup, add, searchValue, setSearchValue, setToSearch }: any) => {
-    const classes = useStyles();
-    const theme = useTheme();
-    const [value, setValue] = React.useState(0);
+const AddPersons =
+    ({ currentGroup, add, save, searchValue, setSearchValue, setToSearch, students }: any) => {
+        const classes = useStyles();
+        const theme = useTheme();
+        const [value, setValue] = React.useState(0);
 
-    const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-        setValue(newValue);
-    };
+        const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+            setValue(newValue);
+        };
 
-    const handleChangeIndex = (index: number) => {
-        setValue(index);
-    };
+        const handleChangeIndex = (index: number) => {
+            setValue(index);
+        };
 
-    return (
-        <div className={classes.root}>
-            <AppBar position="static" color="transparent">
-                <Tabs
-                    value={value}
-                    onChange={handleChange}
-                    indicatorColor="secondary"
-                    textColor="secondary"
-                    variant="fullWidth"
-                    aria-label="full width tabs example"
+        return (
+            <div className={classes.root}>
+                <AppBar position="static" color="transparent">
+                    <Tabs
+                        value={value}
+                        onChange={handleChange}
+                        indicatorColor="secondary"
+                        textColor="secondary"
+                        variant="fullWidth"
+                        aria-label="full width tabs example"
+                    >
+                        <Tab label="Dodaj" onClick={() => setToSearch(false)} />
+                        <Tab label="Pretrazi" onClick={() => setToSearch(true)} />
+                    </Tabs>
+                </AppBar>
+                <SwipeableViews
+                    axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+                    index={value}
+                    onChangeIndex={handleChangeIndex}
                 >
-                    <Tab label="Dodaj" onClick={() => setToSearch(false)} />
-                    <Tab label="Pretrazi" onClick={() => setToSearch(true)} />
-                </Tabs>
-            </AppBar>
-            <SwipeableViews
-                axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-                index={value}
-                onChangeIndex={handleChangeIndex}
-            >
-                <TabPanel value={value} index={0} dir={theme.direction}>
-                    {
-                        AddPersonsForm({ currentGroup, add })
-                    }
-                </TabPanel>
-                <TabPanel value={value} index={1} dir={theme.direction}>
-                    <TextField
-                        className={classes.input}
-                        id='name'
-                        value={searchValue}
-                        onChange={(e) => setSearchValue(e.target.value)}
-                        label="Pretraga"
-                        type="text"
-                        color='secondary'
-                        variant="outlined"
-                        inputProps={{
-                            maxLength: 30,
-                        }}
-                    />
-                </TabPanel>
-            </SwipeableViews>
-        </div>
-    );
-}
+                    <TabPanel value={value} index={0} dir={theme.direction}>
+                        {
+                            AddPersonsForm({ currentGroup, add, save, students })
+                        }
+                    </TabPanel>
+                    <TabPanel value={value} index={1} dir={theme.direction}>
+                        <TextField
+                            className={classes.input}
+                            id='name'
+                            value={searchValue}
+                            onChange={(e) => setSearchValue(e.target.value)}
+                            label="Pretraga"
+                            type="text"
+                            color='secondary'
+                            variant="outlined"
+                            inputProps={{
+                                maxLength: 30,
+                            }}
+                        />
+                    </TabPanel>
+                </SwipeableViews>
+            </div>
+        );
+    }
 
 export default AddPersons;

@@ -7,7 +7,6 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { professors } from '../lib/mocks/professors';
 import { Professor } from '../src/ts/interfaces/users.interface';
-import Link from 'next/link';
 import Router from 'next/router';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -39,10 +38,13 @@ const AdminTabExpansionPanels = ({ orderBy }: Props) => {
     let profs: Professor[] = professors;
 
     if (orderBy === 0) {
+        // @ts-ignore
         profs.sort((a, b) => b.overallGrade - a.overallGrade);
     } else if (orderBy === 1) {
+        // @ts-ignore
         profs.sort((a, b) => a.overallGrade - b.overallGrade);
     } else {
+        // @ts-ignore
         profs.sort((a, b) => a.comments.length - b.comments.length);
     }
 
@@ -69,7 +71,10 @@ const AdminTabExpansionPanels = ({ orderBy }: Props) => {
             {profs.map((prof: Professor, index: number) =>
                 <ExpansionPanelDetails key={index} onClick={() => Router.push('/professorProfile')}>
                     <Typography className={classes.heading}>
-                        {orderBy === 2 ? prof.comments.length : prof.overallGrade}
+                        {
+                            // @ts-ignore
+                            orderBy === 2 ? prof.comments.length : prof.overallGrade
+                        }
                     </Typography>
                     <Typography className={classes.secondaryHeading}>
                         {prof.title + ' ' + prof.firstName + ' ' + prof.lastName}
