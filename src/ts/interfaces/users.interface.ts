@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 export interface Person {
   _id: string;
   firstName: string;
@@ -19,7 +21,7 @@ export interface Student extends Person {
 }
 
 export interface ProfessorMark {
-  ProfessorId: string;
+  ProfessorId: string | mongoose.Types.ObjectId;
   marked: boolean;
 }
 

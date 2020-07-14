@@ -19,6 +19,7 @@ const MemberMenu = ({ member, openModal, removeLecturer }: IMemberMenu): JSX.Ele
         close();
     }
 
+    console.log(member._id)
     return (
         <PopupState variant="popover" popupId="popup-menu">
             {(popupState) => (
@@ -27,27 +28,30 @@ const MemberMenu = ({ member, openModal, removeLecturer }: IMemberMenu): JSX.Ele
                         <MoreVertIcon color='primary' />
                     </IconButton>
                     <Menu {...bindMenu(popupState)}>
-
                         {
-                            // @ts-ignore
-                            member._id.length ?
-                                <MenuItem
-                                    onClick={() => rename(popupState)}
-                                >
-                                    Promjeni
-                                </MenuItem> :
+                            (member._id.length > 1) ?
+                                [
+                                    <MenuItem
+                                        key='p'
+                                        onClick={() => rename(popupState)}
+                                    >
+                                        Promjeni
+                                    </MenuItem>,
+                                    <MenuItem
+                                        key='o'
+                                        color='secondary'
+                                        onClick={() => deleteMember(popupState)}
+                                    >
+                                        Obrisi
+                                    </MenuItem>
+                                ]
+                                :
                                 <MenuItem
                                     onClick={() => rename(popupState)}
                                 >
                                     Dodaj
                                 </MenuItem>
                         }
-                        <MenuItem
-                            color='secondary'
-                            onClick={() => deleteMember(popupState)}
-                        >
-                            Obrisi
-                        </MenuItem>
                     </Menu>
                 </React.Fragment>
             )}

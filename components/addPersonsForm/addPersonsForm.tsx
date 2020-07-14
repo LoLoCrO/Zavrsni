@@ -19,7 +19,8 @@ const AddPersonsForm =
             lastName: '',
         };
 
-        const filtered = students.filter((s: Student) => !currentGroup.includes(s));
+        const filtered = students.filter((s: Student) =>
+            !currentGroup.find((c: Student) => c._id === s._id));
 
         return (
             <Formik

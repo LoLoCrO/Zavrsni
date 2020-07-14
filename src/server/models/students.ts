@@ -1,5 +1,4 @@
 import mongoose, { Document, Schema } from "mongoose";
-import { ProfessorMark } from "../../ts/interfaces/users.interface";
 
 interface IStudentSchema extends Document {
   _id: Schema.Types.ObjectId;
@@ -10,7 +9,10 @@ interface IStudentSchema extends Document {
   role: string;
   email: string;
   password: string;
-  professorMarks?: ProfessorMark[];
+  professorMarks: {
+    _id: string;
+    marked: boolean;
+  };
 }
 
 const StudentSchema: Schema = new Schema({
