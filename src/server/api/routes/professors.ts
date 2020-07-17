@@ -1,5 +1,6 @@
 import { professors } from "../../models/professors";
 import { Router } from "express";
+import mongoose from "mongoose";
 
 const Professors = (router: Router) => {
   router.post("/professors", (req, res) => {
@@ -34,36 +35,41 @@ const Professors = (router: Router) => {
       });
   });
 
-  router.get("/professors", (_req, res) => {
+  router.get("/professors", (req, res) => {
     professors
       .find()
       .sort({ lastName: 1 })
       .exec()
-      .then((docs) => res.status(200).json(docs))
+      .then((professors) => res.status(200).json({ success: true, professors }))
       .catch((err) =>
         res.status(500).json({
+          success: false,
           message: "Error getting professors",
           error: err,
         })
       );
   });
 
-  router.get("/professors/:id", (_req, res) => {
+  router.get("/professors/profile", (req, res) => {
+    const { _id } = req.params;
     professors
-      .find({ _id: _req.params.id })
+    // @ts-ignore
+      .find({ _id: new mongoose.Types.ObjectId(_id) })
       .exec()
-      .then((docs) => res.status(200).json(docs))
-      .catch((err) =>
+      .then((professor: any) => res.status(200).json({ success: true, professor }))
+      .catch((err: any) =>
         res.status(500).json({
+          success: false,
           message: "Error getting professor",
           error: err,
         })
       );
   });
 
-  router.post("/professors/:id", (req, res) => {
+  router.patch("/professors/update", (req, res) => {
     const body = req.body;
-
+    const { _id } = body;
+    console.log("SVE", body, _id);
     if (!body) {
       return res.status(400).json({
         success: false,
@@ -72,10 +78,13 @@ const Professors = (router: Router) => {
     }
 
     professors
-      .findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true })
-      .then((docs) => res.status(200).json(docs))
+      .findByIdAndUpdate({ _id }, body, {
+        new: true,
+      })
+      .then((professor) => res.status(200).json({ success: true, professor }))
       .catch((err) =>
         res.status(500).json({
+          success: false,
           message: "Error getting professor",
           error: err,
         })

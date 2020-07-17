@@ -2,10 +2,10 @@ import React from 'react';
 import TemporaryDrawer from '../components/drawer';
 import FullWidthTabs from '../components/adminTabs';
 import { StyledPaper, TemporaryDrawerWrapper, Title } from '../lib/styles/adminHome';
+import axios from 'axios';
 import { NextPage } from 'next';
-import Router from 'next/router';
 
-const AdminHome: NextPage = (): JSX.Element =>
+const AdminHome: NextPage = ({ professors }: any): JSX.Element =>
     <StyledPaper elevation={3}>
         <TemporaryDrawerWrapper>
             <TemporaryDrawer />
@@ -13,36 +13,30 @@ const AdminHome: NextPage = (): JSX.Element =>
         <Title width={1}>
             Vaši predavači
         </Title>
-        <FullWidthTabs />
+        <FullWidthTabs
+            professors={professors}
+        />
     </StyledPaper>;
 
-AdminHome.getInitialProps = async ({ query, res }: any) => {
+AdminHome.getInitialProps = async ({ res }: any) => {
 
-    console.log("adminHome query", query);
+    const { professors } = await axios.get('http://localhost:3000/api/professors')
+        .then(res => {
+            if (!res.data.success) {
+                window.alert('Doslo je do pogreske!')
+                console.log(res)
+            }
+            return res.data;
+        })
+        .catch(err => {
+            window.alert('Doslo je do pogreske!')
+            console.log(err)
+            return res.redirect('/login');
+        });
 
-    if (!query.user) {
-        res.redirect('/login');
-    }
+    console.log("adminHome professors", professors);
 
-    const admin = await JSON.parse(query.user);
-
-    // const res = await axios.get('http://localhost:3000/api/students/lecturers', {
-    //     params: {
-    //         _id
-    //     }
-    // })
-    //     .then(res => {
-    //         console.log(res)
-    //         return res;
-    //     })
-    //     .catch(err => {
-    //         console.log(err)
-    //         return err;
-    //     });
-
-    // await console.log('axios lecturers', res.data)
-
-    return admin;
+    return { professors };
 }
 
 export default AdminHome;

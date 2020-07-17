@@ -27,5 +27,5 @@ export interface ProfessorMark {
 
 export interface IEditProfessor {
   professor: Professor;
-  setProfessor: React.Dispatch<React.SetStateAction<Professor>>;
+  postUpdate: (prof: Professor) => Promise<any>;
 }

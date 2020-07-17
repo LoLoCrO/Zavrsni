@@ -5,7 +5,7 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { professors } from '../lib/mocks/professors';
+// import { professors } from '../lib/mocks/professors';
 import { Professor } from '../src/ts/interfaces/users.interface';
 import Router from 'next/router';
 
@@ -27,25 +27,29 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface Props {
+    professors: any;
     orderBy: number;
 };
 
-const AdminTabExpansionPanels = ({ orderBy }: Props) => {
-
+const AdminTabExpansionPanels = ({ orderBy, professors }: Props) => {
+    console.log('AdminTabExpansionPanels', professors)
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState<string | false>(false);
 
     let profs: Professor[] = professors;
 
     if (orderBy === 0) {
-        // @ts-ignore
-        profs.sort((a, b) => b.overallGrade - a.overallGrade);
+        profs.sort((a, b) =>
+            b.overallGrade && a.overallGrade ? b.overallGrade - a.overallGrade : 0
+        );
     } else if (orderBy === 1) {
-        // @ts-ignore
-        profs.sort((a, b) => a.overallGrade - b.overallGrade);
+        profs.sort((a, b) =>
+            b.overallGrade && a.overallGrade ? a.overallGrade - b.overallGrade : 0
+        );
     } else {
-        // @ts-ignore
-        profs.sort((a, b) => a.comments.length - b.comments.length);
+        profs.sort((a, b) =>
+            b.comments && a.comments ? a.comments.length - b.comments.length : 0
+        );
     }
 
     const handleChange = (panel: string) =>
@@ -69,7 +73,15 @@ const AdminTabExpansionPanels = ({ orderBy }: Props) => {
                 <Typography className={classes.secondaryHeading}>&ensp; Predavac</Typography>
             </ExpansionPanelSummary>
             {profs.map((prof: Professor, index: number) =>
-                <ExpansionPanelDetails key={index} onClick={() => Router.push('/professorProfile')}>
+                <ExpansionPanelDetails
+                    key={index}
+                    onClick={() => Router.push({
+                        pathname: '/professorProfile',
+                        query: {
+                            professor: JSON.stringify(prof)
+                        }
+                    })}
+                >
                     <Typography className={classes.heading}>
                         {
                             // @ts-ignore

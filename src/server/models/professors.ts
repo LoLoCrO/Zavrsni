@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 interface IProfessorSchema extends Document {
-  _id: string;
+  _id: Schema.Types.ObjectId;
   firstName: string;
   middleName?: string;
   lastName: string;
@@ -15,7 +15,7 @@ interface IProfessorSchema extends Document {
 }
 
 const ProfessorSchema: Schema = new Schema({
-  _id: { type: String, require: true },
+  _id: { type: Schema.Types.ObjectId, require: true },
   firstName: { type: String, require: true },
   middleName: { type: String, require: false },
   lastName: { type: String, require: true },

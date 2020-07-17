@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
-const FullWidthTabs = () => {
+const FullWidthTabs = ({ professors }: any) => {
     const classes = useStyles();
     const theme = useTheme();
     const [value, setValue] = React.useState(0);
@@ -63,7 +63,12 @@ const FullWidthTabs = () => {
 
     const listTabs = (labels: string[]) =>
         labels.map((label: string) =>
-            <Tab label={label} {...tabProps(label)} />)
+            <Tab
+                key={label}
+                label={label}
+                {...tabProps(label)}
+            />
+        )
 
     return (
         <div className={classes.root}>
@@ -92,6 +97,7 @@ const FullWidthTabs = () => {
                         dir={theme.direction}
                     >
                         <AdminTabExpansionPanels
+                            professors={professors}
                             orderBy={index}
                         />
                     </TabPanel>

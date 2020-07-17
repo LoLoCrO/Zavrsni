@@ -17,14 +17,31 @@ import Drawer from '../components/drawer';
 import EditProfessor from "../components/editProfessor";
 import { Professor } from '../src/ts/interfaces/users.interface';
 import { professors } from '../lib/mocks/professors';
+import { NextPage } from 'next';
+import axios from 'axios';
 
-const StudentHome: React.FunctionComponent = (): JSX.Element => {
-
-    const [editProfessor, setEditProfessor] = React.useState<boolean>(false);
+const ProfessorProfle: NextPage = ({ prof }: any): JSX.Element => {
 
     const classes = useStyles()
 
-    const [professor, setProfessor] = React.useState<Professor>(professors[0])
+    const [editProfessor, setEditProfessor] = React.useState<boolean>(false);
+
+    const [professor, setProfessor] = React.useState<Professor>(prof ? prof : professors[0]);
+
+    const postUpdate = async (prof: Professor) =>
+        await axios.patch('http://localhost:3000/api/professors/update', prof)
+            .then(res => {
+                if (!res.data.success) {
+                    window.alert('Doslo je do pogreske!')
+                    console.log(res)
+                }
+                setProfessor(res.data.professor);
+                setEditProfessor(!editProfessor);
+            })
+            .catch(err => {
+                window.alert('Doslo je do pogreske!')
+                console.log(err);
+            });
 
     return (
         <React.Fragment>
@@ -53,7 +70,7 @@ const StudentHome: React.FunctionComponent = (): JSX.Element => {
                 </Wrapper>
                 {
                     editProfessor ?
-                        EditProfessor({ professor, setProfessor }) :
+                        EditProfessor({ professor, postUpdate }) :
                         <div>
                             <StyledBox>
                                 {professor.firstName + ' ' + professor.lastName}
@@ -75,17 +92,19 @@ const StudentHome: React.FunctionComponent = (): JSX.Element => {
                                     aria-controls="panel1a-content"
                                     id="panel1a-header"
                                 >
-                                    <StyledBox fontSize={16}>Komentari</StyledBox>
+                                    <StyledBox fontSize={16}>
+                                        {professor.comments?.length ? 'Komentari' : 'Nema komentara'}
+                                    </StyledBox>
                                 </ExpansionPanelSummary>
                                 {
-                                    // @ts-ignore
-                                    professor.comments.map((comment: string, index: number) =>
-                                        <ExpansionPanelDetails key={index}>
-                                            <StyledBox>
-                                                {comment}
-                                            </StyledBox>
-                                        </ExpansionPanelDetails>
-                                    )
+                                    professor.comments?.length ?
+                                        professor.comments.map((comment: string, index: number) =>
+                                            <ExpansionPanelDetails key={index}>
+                                                <StyledBox>
+                                                    {comment}
+                                                </StyledBox>
+                                            </ExpansionPanelDetails>
+                                        ) : null
                                 }
                             </ExpansionPanel>
                         </div>
@@ -95,4 +114,14 @@ const StudentHome: React.FunctionComponent = (): JSX.Element => {
     );
 }
 
-export default StudentHome;
+ProfessorProfle.getInitialProps = async ({ query, res }: any) => {
+    const { professor } = query;
+    // console.log(query, JSON.parse(professor))
+    if (!professor) {
+        return res.redirect('/adminHome');
+    } else return {
+        prof: JSON.parse(professor)
+    };
+}
+
+export default ProfessorProfle;

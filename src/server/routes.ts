@@ -29,11 +29,11 @@ export const adminRoutes: Array<routesType> = [
   // { role: "admin", path: "/addstudents", pageToRender: "addStudents" },
   // { role: "admin", path: "/addgroups", pageToRender: "addGroups" },
   // { role: "admin", path: "/populategroup", pageToRender: "populateGroup" },
-  {
-    role: "admin",
-    path: "/professorprofile",
-    pageToRender: "professorProfile",
-  },
+  // {
+  //   role: "admin",
+  //   path: "/professorprofile",
+  //   pageToRender: "professorProfile",
+  // },
 ];
 export const groups = {
   role: "admin",

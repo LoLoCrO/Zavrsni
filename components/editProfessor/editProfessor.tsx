@@ -3,10 +3,10 @@ import { Formik } from 'formik';
 import { Professor, IEditProfessor } from '../../src/ts/interfaces/users.interface';
 import { StyledForm, StyledTextField, StyledButton } from './styles';
 
-const EditProfessor = ({ professor, setProfessor }: IEditProfessor): JSX.Element =>
+const EditProfessor = ({ professor, postUpdate }: IEditProfessor): JSX.Element =>
     <Formik
         initialValues={professor}
-        onSubmit={(values: Professor) => setProfessor(values)}
+        onSubmit={(values: Professor) => postUpdate(values)}
     >
         {({ values, handleChange }) => (
             <StyledForm>
