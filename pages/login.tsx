@@ -16,8 +16,9 @@ const Login: React.FunctionComponent = (): JSX.Element => {
             data: { email, password }
         })
             .then((res) => {
+                console.log(res.data)
                 if (res.data.user.role === 'student') {
-                    Router.push({ pathname: '/studentHome', query: { user: JSON.stringify(res.data.user) }, })
+                    Router.push({ pathname: '/studentHome', query: { _id: res.data.user._id }, })
                 } else {
                     Router.push({ pathname: '/adminHome', query: { user: JSON.stringify(res.data.user) }, })
                 }

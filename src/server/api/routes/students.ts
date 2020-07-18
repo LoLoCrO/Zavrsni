@@ -42,42 +42,44 @@ const Students = (router: Router) => {
     const student = await students
       .findById({ _id })
       .exec()
-      .then((lecturers) => {
-        console.log("lecturers aaaa", lecturers);
-        return lecturers;
+      .then((student) => {
+        console.log("lecturers aaaa", student);
+        return student;
       })
       .catch((err) => {
         console.log(err, "2");
-        return res.json({ err });
+        return null;
       });
+
     console.log("Student Query res", student);
-    return res.json(student);
-    // if (student._id.length) {
-    //   if (student.professorMarks) {
-    //     const lecturersIDs: string[] = student.professorMarks.map(
-    //       ({ ProfessorId }) => ProfessorId
-    //     );
-    //     const stpr = await professors
-    //       .find()
-    //       .where("_id")
-    //       .in(lecturersIDs)
-    //       .exec((err, records) => {
-    //         console.log(err, records, "svasta");
-    //         return err ? err : records;
-    //       });
-    //     console.log("STPR", stpr);
-    //     // .then((data) => {
-    //     //   console.log(data);
-    //     //   return data;
-    //     //   // return res.json({ data });
-    //     // })
-    //     // .catch((err) => {
-    //     //   console.log(err);
-    //     //   return err;
-    //     //   // return res.json({ err });
-    //     // });
-    //   }
-    // }
+
+    if (student && typeof student.professorMarks !== "undefined") {
+      const lecturers = await professors
+        .find({
+          _id: {
+            $in: student.professorMarks.map((mark: any) => mark._id),
+          },
+        })
+        .exec()
+        .then((data: any) => {
+          console.log(data);
+          return data;
+        })
+        .catch((err) => console.log(err));
+
+      if (lecturers) {
+        console.log("RADI", { studentMarks: student.professorMarks });
+        return res.json({
+          success: true,
+          lecturers,
+          studentMarks: student.professorMarks,
+        });
+      }
+    } else
+      return res.json({
+        success: false,
+        message: "Student/student lecturer not found",
+      });
   });
 
   router.post("/students/:id", (req, res) => {

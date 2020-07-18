@@ -34,8 +34,6 @@ AdminHome.getInitialProps = async ({ res }: any) => {
             return res.redirect('/login');
         });
 
-    console.log("adminHome professors", professors);
-
     return { professors };
 }
 

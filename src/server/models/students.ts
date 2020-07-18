@@ -9,10 +9,11 @@ interface IStudentSchema extends Document {
   role: string;
   email: string;
   password: string;
-  professorMarks: {
+  professorMarks: Array<{
     _id: string;
     marked: boolean;
-  };
+    groupName: string;
+  }>;
 }
 
 const StudentSchema: Schema = new Schema({
@@ -29,6 +30,7 @@ const StudentSchema: Schema = new Schema({
       {
         _id: { type: Schema.Types.ObjectId, require: true },
         marked: { type: Boolean, require: true },
+        groupName: { type: String, require: false },
       },
     ],
     required: false,

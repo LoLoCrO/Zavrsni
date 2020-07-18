@@ -6,10 +6,9 @@ import axios from 'axios';
 import { NextPage } from 'next';
 import { Typography } from '@material-ui/core';
 
-const StudentHome: NextPage = (context: any) => {
-    console.log('student', context);
+const StudentHome: NextPage = ({ _id, lecturers }: any) => {
 
-    const list: any[] = context.professorMarks;
+    const list: any[] = lecturers;
 
     const displayLecturers = () => list.length < 1 ?
         <Typography
@@ -19,17 +18,20 @@ const StudentHome: NextPage = (context: any) => {
         >
             Lista je trenutno prazna.
         </Typography>
-        : list.map((num: number) =>
+        : list.map((lecturer: any, index: number) =>
             <Link
-                key={num}
+                key={index}
                 href={{
                     pathname: '/questionnaire',
-                    // query: { object: JSON.stringify(object) }
+                    query: {
+                        _id,
+                        lecturer_id: lecturer._id
+                    }
                 }}>
                 <Ticket elevation={3}>
-                    <LecturerTicket>
-                        {num}
-                    </LecturerTicket>
+                    <LecturerTicket >
+                        {lecturer}
+                    </LecturerTicket >
                 </Ticket>
             </Link>
         )
@@ -48,13 +50,13 @@ const StudentHome: NextPage = (context: any) => {
 }
 
 
-StudentHome.getInitialProps = async ({ query }: any) => {
+StudentHome.getInitialProps = async ({ query: { _id } }: any) => {
 
-    console.log("StudentHome query", query);
+    console.log("StudentHome query", _id);
 
-    const { _id } = await JSON.parse(query.user);
+    const route = 'http://localhost:3000/api/students/lecturers';
 
-    const res = await axios.get('http://localhost:3000/api/students/lecturers', {
+    const { data: { lecturers, studentMarks } } = await axios.get(route, {
         params: {
             _id
         }
@@ -68,9 +70,17 @@ StudentHome.getInitialProps = async ({ query }: any) => {
             return err;
         });
 
-    console.log('axios lecturers', res.data)
+    const updatedLecturers = studentMarks.map((mark: any) => {
+        const lect = lecturers.find((lectuer: any) => lectuer._id === mark._id)
+        return Object.assign({}, lect, { groupName: mark.groupName })
+    });
 
-    return res.data;
+    console.log('axios lecturers', updatedLecturers)
+
+    return {
+        _id,
+        lecturers: updatedLecturers
+    };
 }
 
 export default StudentHome;

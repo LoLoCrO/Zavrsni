@@ -21,8 +21,9 @@ export interface Student extends Person {
 }
 
 export interface ProfessorMark {
-  ProfessorId: string | mongoose.Types.ObjectId;
+  _id: string | mongoose.Types.ObjectId;
   marked: boolean;
+  groupName: string;
 }
 
 export interface IEditProfessor {

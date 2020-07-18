@@ -32,7 +32,6 @@ interface Props {
 };
 
 const AdminTabExpansionPanels = ({ orderBy, professors }: Props) => {
-    console.log('AdminTabExpansionPanels', professors)
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState<string | false>(false);
 

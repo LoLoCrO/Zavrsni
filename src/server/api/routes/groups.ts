@@ -221,26 +221,26 @@ const Groups = (router: Router) => {
 
     console.log("Ulaz", group);
 
-    const newStudents = group.students
+    const newStudents: any[] = group.students
       .filter((student: Student) => {
         const marks = student.professorMarks;
         console.log(marks);
         if (!marks) {
           return student._id;
-        } else if (
-          !marks.find((mark) => mark.ProfessorId === group.lecturer._id)
-        ) {
+        } else if (!marks.find((mark) => mark.groupName === group.name)) {
           return student._id;
         } else return null;
       })
       .filter((val: any) => val !== null);
+
+    console.log("New students", newStudents);
 
     const newGroup = await groups
       .findByIdAndUpdate(
         { _id: group._id },
         {
           $unset: {
-            ...(!group.lecturer ? { lecturer: '' } : {}),
+            ...(!group.lecturer ? { lecturer: "" } : {}),
           },
           $set: {
             ...(group.lecturer ? { lecturer: group.lecturer._id } : {}),
@@ -253,7 +253,7 @@ const Groups = (router: Router) => {
       .then((g: any) => {
         console.log("delete g.lecturer before", g);
         if (!group.lecturer) {
-        console.log("deleteting", g.lecturer);
+          console.log("deleteting", g.lecturer);
           delete g.lecturer;
         }
         console.log("delete g.lecturer after", g);
@@ -268,33 +268,45 @@ const Groups = (router: Router) => {
 
     console.log("newGroup", newGroup, newGroup.lecturer, newGroup.students);
 
-    if (newStudents.length && newGroup.lecturer.length) {
+    if (newStudents.length && newGroup.lecturer.toString().length) {
       const _id: string = newGroup.lecturer;
-      students
+      const s = await students
         .updateMany(
           {
             _id: {
-              $in: newStudents,
+              // @ts-ignore
+              $in: newStudents.map(
+                (s: any) => new mongoose.Types.ObjectId(s._id)
+              ),
             },
           },
           {
-            $set: {
+            $push: {
               professorMarks: {
                 _id,
                 marked: false,
+                groupName: group.name,
               },
             },
           }
         )
-        .then((data) => {
+        .then((data: any) => {
           console.log("Izlaz studenata", data);
-          return res.json({ success: true, ...data });
+          return data;
         })
-        .catch((err) => {
+        .catch((err: any) => {
           console.log(err);
-          return res.json({ success: false, err });
+          return null;
         });
-    }
+      if (s) {
+        console.log("evo s", s);
+        return res.json({ success: true, ...s });
+      } else res.json({ success: false });
+    } else
+      res.json({
+        success: true,
+        message: "No lecturer and/or new students",
+      });
   });
 };
 

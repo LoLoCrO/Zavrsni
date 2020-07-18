@@ -50,13 +50,15 @@ const Professors = (router: Router) => {
       );
   });
 
-  router.get("/professors/profile", (req, res) => {
+  router.put("/professors/questionnaire", (req, res) => {
     const { _id } = req.params;
     professors
-    // @ts-ignore
+      // @ts-ignore
       .find({ _id: new mongoose.Types.ObjectId(_id) })
       .exec()
-      .then((professor: any) => res.status(200).json({ success: true, professor }))
+      .then((professor: any) =>
+        res.status(200).json({ success: true, professor })
+      )
       .catch((err: any) =>
         res.status(500).json({
           success: false,
@@ -69,7 +71,6 @@ const Professors = (router: Router) => {
   router.patch("/professors/update", (req, res) => {
     const body = req.body;
     const { _id } = body;
-    console.log("SVE", body, _id);
     if (!body) {
       return res.status(400).json({
         success: false,
