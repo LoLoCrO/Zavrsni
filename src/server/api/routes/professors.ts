@@ -1,6 +1,6 @@
 import { professors } from "../../models/professors";
+import { students } from "../../models/students";
 import { Router } from "express";
-import mongoose from "mongoose";
 
 const Professors = (router: Router) => {
   router.post("/professors", (req, res) => {
@@ -50,22 +50,165 @@ const Professors = (router: Router) => {
       );
   });
 
-  router.put("/professors/questionnaire", (req, res) => {
-    const { _id } = req.params;
-    professors
-      // @ts-ignore
-      .find({ _id: new mongoose.Types.ObjectId(_id) })
+  router.post("/professors/questionnaire", async (req, res) => {
+    const { _id, student_id, grade, comment, groupName } = req.body;
+
+    const currentLecturer = await professors
+      .findById(_id)
+      .lean()
       .exec()
-      .then((professor: any) =>
-        res.status(200).json({ success: true, professor })
-      )
-      .catch((err: any) =>
-        res.status(500).json({
-          success: false,
-          message: "Error getting professor",
-          error: err,
-        })
-      );
+      .then(async (professor) => {
+        if (professor) {
+          const currentGrade =
+            grade.reduce(
+              (accumulator: number, currentValue: number) =>
+                accumulator + currentValue
+            ) / 10;
+
+          const divider = professor.grades ? professor.grades.length + 1 : 1;
+
+          const newOverallGrade = professor.grades?.length
+            ? (professor.grades.reduce(
+                (accumulator, currentValue) => accumulator + currentValue
+              ) +
+                currentGrade) /
+              divider
+            : currentGrade;
+
+          const newGrades = professor.grades
+            ? professor.grades.map((n: number) => n)
+            : [currentGrade];
+          newGrades.push(currentGrade);
+
+          return await professors
+            .findByIdAndUpdate(
+              { _id },
+              {
+                overallGrade: parseFloat(newOverallGrade.toFixed(2)),
+                grades: newGrades,
+                comments: comment,
+              },
+              { new: true }
+            )
+            .lean()
+            .then(async (professor: any) => {
+              console.log("Route p/q", professor);
+              // const student = await students.findOne({ _id: student_id });
+
+              // const professorMarks = student!.professorMarks.map((mark) =>
+              //   mark.groupName === groupName
+              //     ? { _id: mark._id, groupName, marked: true }
+              //     : mark
+              // );
+
+              // console.log("professorMarks", professorMarks);
+              // const saved = await student!.save();
+              // console.log(saved);
+
+              return await students.findOneAndUpdate(
+                { _id: student_id, "professorMarks.groupName": groupName },
+                {
+                  $set: {
+                    "professorMarks.$": { groupName, marked: true, _id },
+                  },
+                },
+                (err, doc) => {
+                  if (err) {
+                    console.log(err);
+                    return res.json({ success: false, err });
+                  }
+                  console.log(doc);
+                  return res.json({ success: true, doc });
+                }
+              );
+              // .then((student) => {
+              //   if (student) {
+              //     student.professorMarks.forEach((mark, index) => {
+              //       if (mark.groupName === groupName) {
+              //         student.professorMarks.set(req.body); // updates the address while keeping its schema
+              //         mark.marked = true;
+              //       }
+              //     }); // returns a matching subdocument
+
+              //     return user.save(); // saves document with subdocuments and triggers validation
+              //   }
+              // })
+              // .then((user) => {
+              //   res.send({ user });
+              // })
+              // .catch((e) => res.status(400).send(e));
+              // .findOne(
+              //   { "professorMarks.groupName": groupName },
+              //   { "professorMarks.$": 1 },
+              //   (err, student) => {
+              //     if(err) {
+              //       console.log("Error", err);
+              //     }
+              //     console.log(student);
+              //     student?.professorMarks
+              //   }
+              // );
+              // .findOneAndUpdate(
+              //   { _id: student_id, "professorMarks.groupName": groupName },
+              //   { $set: { "professorMarks.$.marked": true } }
+              // )
+              // .update(
+              //   { _id: student_id, "professorMarks.groupName": groupName },
+              //   {
+              //     $set: {
+              //       "professorMarks.$.marked": true,
+              //     },
+              //   }
+              // )
+              // .findByIdAndUpdate(
+              //   {
+              //     _id: student_id,
+              //   },
+              //   {
+              //     "professorMarks.groupName": groupName,
+              //     $set: {
+              //       "professorMarks.$.marked": true,
+              //     },
+              //   },
+              //   { new: true }
+              // )
+              // .then((data) => res.json({ success: true, data }))
+              // .catch((err) => {
+              //   console.log("Marking", err);
+              //   return res.json({ success: true });
+              // });
+            })
+            .catch((err: any) => {
+              const tempError = {
+                ok: 0,
+                code: 2,
+                codeName: "BadValue",
+                name: "MongoError",
+              };
+              console.log("err === tempError", err === tempError);
+              if (err === tempError) {
+                return {
+                  message: "Error updating professor OK",
+                  success: true,
+                  err,
+                };
+              } else
+                return {
+                  message: "Error updating professor",
+                  success: false,
+                  err,
+                };
+            });
+        } else
+          return res.json({
+            success: false,
+            message: "Error getting professor",
+          });
+      })
+      .catch((err) => {
+        console.log("No result", err);
+        return null;
+      });
   });
 
   router.patch("/professors/update", (req, res) => {

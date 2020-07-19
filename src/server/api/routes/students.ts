@@ -42,16 +42,11 @@ const Students = (router: Router) => {
     const student = await students
       .findById({ _id })
       .exec()
-      .then((student) => {
-        console.log("lecturers aaaa", student);
-        return student;
-      })
+      .then((student) => student)
       .catch((err) => {
         console.log(err, "2");
         return null;
       });
-
-    console.log("Student Query res", student);
 
     if (student && typeof student.professorMarks !== "undefined") {
       const lecturers = await professors
@@ -61,14 +56,10 @@ const Students = (router: Router) => {
           },
         })
         .exec()
-        .then((data: any) => {
-          console.log(data);
-          return data;
-        })
+        .then((data: any) => data)
         .catch((err) => console.log(err));
 
       if (lecturers) {
-        console.log("RADI", { studentMarks: student.professorMarks });
         return res.json({
           success: true,
           lecturers,

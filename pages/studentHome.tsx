@@ -25,7 +25,9 @@ const StudentHome: NextPage = ({ _id, lecturers }: any) => {
                     pathname: '/questionnaire',
                     query: {
                         _id,
-                        lecturer_id: lecturer._id
+                        lecturer,
+                        lecturer_id: lecturer._id,
+                        groupName: lecturer.groupName
                     }
                 }}>
                 <Ticket elevation={3}>
@@ -74,8 +76,6 @@ StudentHome.getInitialProps = async ({ query: { _id } }: any) => {
         const lect = lecturers.find((lectuer: any) => lectuer._id === mark._id)
         return Object.assign({}, lect, { groupName: mark.groupName })
     });
-
-    console.log('axios lecturers', updatedLecturers)
 
     return {
         _id,

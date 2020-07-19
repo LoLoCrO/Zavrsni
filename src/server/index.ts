@@ -77,7 +77,7 @@ app.prepare().then(() => {
         if (err) throw err;
         console.log("Listening on port " + argv.port + "!");
       });
-    });
+    }).addListener("error", (err: Error) => console.log(err));
   } catch (err) {
     console.error(`Unhandled server exception: ${err.message}`, err);
   }
