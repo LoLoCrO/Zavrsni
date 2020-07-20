@@ -4,8 +4,10 @@ import axios from 'axios';
 import Router from 'next/router';
 import { NextPage } from 'next';
 
-const QPage: NextPage = ({ _id, lecturer_id, groupName, lecturer }: any): JSX.Element => {
+const QPage: NextPage = ({ _id, lecturer_id, groupName, studentMarks }: any): JSX.Element => { //{ _id, lecturer_id, groupName, studentMarks }
 
+    console.log("Questionnaire", { _id, lecturer_id, groupName, studentMarks });
+    console.log('JSON.parse(studentMarks)', JSON.parse(studentMarks))
     const app = `http://localhost:3000`;
 
     const studentHome = {
@@ -31,6 +33,13 @@ const QPage: NextPage = ({ _id, lecturer_id, groupName, lecturer }: any): JSX.El
             return formData;
         }
 
+        const updatedMarks = JSON.parse(studentMarks).map(
+            (mark: any) =>
+                mark.groupName === groupName
+                    ? Object.assign({}, mark, { marked: true })
+                    : mark
+        );
+        console.log("updatedMarks", updatedMarks);
         const grade = Object.values(formData)
             .splice(0, Object.keys(formData).length - 1)
             .map((mark: string) => parseInt(mark));
@@ -44,7 +53,7 @@ const QPage: NextPage = ({ _id, lecturer_id, groupName, lecturer }: any): JSX.El
                 grade,
                 comment,
                 groupName,
-                lecturer
+                updatedMarks
             }
         )
             .then((res) => {
@@ -69,9 +78,11 @@ const QPage: NextPage = ({ _id, lecturer_id, groupName, lecturer }: any): JSX.El
     return (<Questionnarie onSubmit={(value: any) => onSubmit(value)} />);
 }
 
-QPage.getInitialProps = ({ query: { _id, lecturer_id } }: any) => ({
+QPage.getInitialProps = ({ query: { _id, lecturer_id, groupName, studentMarks } }: any) => ({
     _id,
-    lecturer_id
+    lecturer_id,
+    groupName,
+    studentMarks
 })
 
 export default QPage;

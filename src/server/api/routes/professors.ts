@@ -51,8 +51,15 @@ const Professors = (router: Router) => {
   });
 
   router.post("/professors/questionnaire", async (req, res) => {
-    const { _id, student_id, grade, comment, groupName } = req.body;
-
+    const {
+      _id,
+      student_id,
+      grade,
+      comment,
+      groupName,
+      updatedMarks,
+    } = req.body;
+    console.log("updatedMarks", updatedMarks);
     const currentLecturer = await professors
       .findById(_id)
       .lean()
@@ -93,90 +100,23 @@ const Professors = (router: Router) => {
             .lean()
             .then(async (professor: any) => {
               console.log("Route p/q", professor);
-              // const student = await students.findOne({ _id: student_id });
-
-              // const professorMarks = student!.professorMarks.map((mark) =>
-              //   mark.groupName === groupName
-              //     ? { _id: mark._id, groupName, marked: true }
-              //     : mark
-              // );
-
-              // console.log("professorMarks", professorMarks);
-              // const saved = await student!.save();
-              // console.log(saved);
-
-              return await students.findOneAndUpdate(
-                { _id: student_id, "professorMarks.groupName": groupName },
-                {
-                  $set: {
-                    "professorMarks.$": { groupName, marked: true, _id },
+              return await students
+                .findByIdAndUpdate(
+                  {
+                    _id: student_id,
                   },
-                },
-                (err, doc) => {
-                  if (err) {
-                    console.log(err);
-                    return res.json({ success: false, err });
-                  }
-                  console.log(doc);
-                  return res.json({ success: true, doc });
-                }
-              );
-              // .then((student) => {
-              //   if (student) {
-              //     student.professorMarks.forEach((mark, index) => {
-              //       if (mark.groupName === groupName) {
-              //         student.professorMarks.set(req.body); // updates the address while keeping its schema
-              //         mark.marked = true;
-              //       }
-              //     }); // returns a matching subdocument
-
-              //     return user.save(); // saves document with subdocuments and triggers validation
-              //   }
-              // })
-              // .then((user) => {
-              //   res.send({ user });
-              // })
-              // .catch((e) => res.status(400).send(e));
-              // .findOne(
-              //   { "professorMarks.groupName": groupName },
-              //   { "professorMarks.$": 1 },
-              //   (err, student) => {
-              //     if(err) {
-              //       console.log("Error", err);
-              //     }
-              //     console.log(student);
-              //     student?.professorMarks
-              //   }
-              // );
-              // .findOneAndUpdate(
-              //   { _id: student_id, "professorMarks.groupName": groupName },
-              //   { $set: { "professorMarks.$.marked": true } }
-              // )
-              // .update(
-              //   { _id: student_id, "professorMarks.groupName": groupName },
-              //   {
-              //     $set: {
-              //       "professorMarks.$.marked": true,
-              //     },
-              //   }
-              // )
-              // .findByIdAndUpdate(
-              //   {
-              //     _id: student_id,
-              //   },
-              //   {
-              //     "professorMarks.groupName": groupName,
-              //     $set: {
-              //       "professorMarks.$.marked": true,
-              //     },
-              //   },
-              //   { new: true }
-              // )
-              // .then((data) => res.json({ success: true, data }))
-              // .catch((err) => {
-              //   console.log("Marking", err);
-              //   return res.json({ success: true });
-              // });
+                  {
+                    $set: {
+                      professorMarks: updatedMarks,
+                    },
+                  },
+                  { new: true }
+                )
+                .then((data) => res.json({ success: true, data }))
+                .catch((err) => {
+                  console.log("Marking", err);
+                  return res.json({ success: true });
+                });
             })
             .catch((err: any) => {
               const tempError = {

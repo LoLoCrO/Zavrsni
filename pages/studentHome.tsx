@@ -6,7 +6,7 @@ import axios from 'axios';
 import { NextPage } from 'next';
 import { Typography } from '@material-ui/core';
 
-const StudentHome: NextPage = ({ _id, lecturers }: any) => {
+const StudentHome: NextPage = ({ _id, lecturers, studentMarks }: any) => {
 
     const list: any[] = lecturers;
 
@@ -18,14 +18,15 @@ const StudentHome: NextPage = ({ _id, lecturers }: any) => {
         >
             Lista je trenutno prazna.
         </Typography>
-        : list.map((lecturer: any, index: number) =>
-            <Link
+        : list.map((lecturer: any, index: number) => {
+            console.log(lecturer)
+            return (<Link
                 key={index}
                 href={{
                     pathname: '/questionnaire',
                     query: {
                         _id,
-                        lecturer,
+                        studentMarks: JSON.stringify(studentMarks),
                         lecturer_id: lecturer._id,
                         groupName: lecturer.groupName
                     }
@@ -36,7 +37,8 @@ const StudentHome: NextPage = ({ _id, lecturers }: any) => {
                     </LecturerTicket >
                 </Ticket>
             </Link>
-        )
+            )
+        })
 
 
     return (
@@ -72,13 +74,23 @@ StudentHome.getInitialProps = async ({ query: { _id } }: any) => {
             return err;
         });
 
-    const updatedLecturers = studentMarks.map((mark: any) => {
+    const updatedMarks = studentMarks.filter((element: any) => !element.marked);
+    const updatedLecturers = updatedMarks.map((mark: any) => {
         const lect = lecturers.find((lectuer: any) => lectuer._id === mark._id)
         return Object.assign({}, lect, { groupName: mark.groupName })
     });
 
+    // {
+    //     console.log("element", element, element.marked, `Condition element.marked ${element.marked}`);
+    //     if (element.marked) {
+    //         return null;
+    //     } else { return element }
+    // }
+
+    console.log('studentMarks', updatedMarks)
     return {
         _id,
+        studentMarks: updatedMarks,
         lecturers: updatedLecturers
     };
 }
