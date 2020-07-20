@@ -52,7 +52,6 @@ const QPage: NextPage = ({ _id, lecturer_id, groupName, studentMarks }: any): JS
                 student_id: _id,
                 grade,
                 comment,
-                groupName,
                 updatedMarks
             }
         )

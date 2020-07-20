@@ -51,16 +51,8 @@ const Professors = (router: Router) => {
   });
 
   router.post("/professors/questionnaire", async (req, res) => {
-    const {
-      _id,
-      student_id,
-      grade,
-      comment,
-      groupName,
-      updatedMarks,
-    } = req.body;
-    console.log("updatedMarks", updatedMarks);
-    const currentLecturer = await professors
+    const { _id, student_id, grade, comment, updatedMarks } = req.body;
+    await professors
       .findById(_id)
       .lean()
       .exec()
@@ -93,7 +85,9 @@ const Professors = (router: Router) => {
               {
                 overallGrade: parseFloat(newOverallGrade.toFixed(2)),
                 grades: newGrades,
-                comments: comment,
+                $push: {
+                  comments: comment,
+                },
               },
               { new: true }
             )

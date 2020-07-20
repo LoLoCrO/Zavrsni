@@ -38,17 +38,15 @@ const AdminTabExpansionPanels = ({ orderBy, professors }: Props) => {
     let profs: Professor[] = professors;
 
     if (orderBy === 0) {
-        profs.sort((a, b) =>
-            b.overallGrade && a.overallGrade ? b.overallGrade - a.overallGrade : 0
-        );
+        profs.sort((a, b) => b.overallGrade! - a.overallGrade!);
     } else if (orderBy === 1) {
         profs.sort((a, b) =>
-            b.overallGrade && a.overallGrade ? a.overallGrade - b.overallGrade : 0
+            a.overallGrade! > 0 ?
+                a.overallGrade! - b.overallGrade! :
+                b.overallGrade! - a.overallGrade!
         );
     } else {
-        profs.sort((a, b) =>
-            b.comments && a.comments ? a.comments.length - b.comments.length : 0
-        );
+        profs.sort((a, b) => a.comments!.length - b.comments!.length);
     }
 
     const handleChange = (panel: string) =>
