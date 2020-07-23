@@ -1,10 +1,18 @@
 import React from 'react';
 import Questionnarie from '../components/questionnaire';
+import { DrawerBox, Sticky } from '../lib/styles/professorProfile';
+import Drawer from '../components/drawer';
 import axios from 'axios';
 import Router from 'next/router';
 import { NextPage } from 'next';
 
 const QPage: NextPage = ({ _id, lecturer_id, groupName, studentMarks }: any): JSX.Element => { //{ _id, lecturer_id, groupName, studentMarks }
+
+    if (process.browser) {
+        const token = localStorage.getItem('token');
+        const role = localStorage.getItem('role');
+        if (!token && Router || role !== 'student') { Router.push('/login') };
+    }
 
     console.log("Questionnaire", { _id, lecturer_id, groupName, studentMarks });
     console.log('JSON.parse(studentMarks)', JSON.parse(studentMarks))
@@ -74,7 +82,18 @@ const QPage: NextPage = ({ _id, lecturer_id, groupName, studentMarks }: any): JS
         return formData;
     }
 
-    return (<Questionnarie onSubmit={(value: any) => onSubmit(value)} />);
+    return (
+        <React.Fragment>
+            <DrawerBox>
+                <Sticky>
+                    <Drawer type='student' />
+                </Sticky>
+            </DrawerBox>
+            <Questionnarie
+                onSubmit={(value: any) => onSubmit(value)}
+            />
+        </React.Fragment>
+    );
 }
 
 QPage.getInitialProps = ({ query: { _id, lecturer_id, groupName, studentMarks } }: any) => ({

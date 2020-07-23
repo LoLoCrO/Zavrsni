@@ -12,14 +12,25 @@ const StyledIconButton = styled(IconButton)`
     }
 `;
 
-const TemporaryDrawer = () => {
+const TemporaryDrawer = ({ type }: any) => {
     const [state, setState] = React.useState<boolean>(false);
 
-    const routes = [
-        { label: 'Grupe', route: '/addGroups' },
-        { label: 'Naslovna', route: '/adminHome' },
-        { label: 'Odjavi me', route: '/api/deauth' }
-    ];
+    const routes = type === 'admin' ?
+        [
+            { label: 'Grupe', route: '/addGroups' },
+            { label: 'Naslovna', route: '/adminHome' },
+            { label: 'Odjavi me', route: '/login' }
+        ]
+        :
+        [
+            { label: 'Odjavi me', route: '/login' }
+        ];
+
+    const deauth = async (route: string) => {
+        localStorage.removeItem('token')
+        localStorage.removeItem('role')
+        Router.push(route);
+    };
 
     const toggleDrawer =
         (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -43,7 +54,11 @@ const TemporaryDrawer = () => {
                         <ListItem
                             key={label}
                             button
-                            onClick={() => Router.push(route)}
+                            onClick={() =>
+                                route === '/login'
+                                    ? deauth(route)
+                                    : Router.push(route)
+                            }
                         >
                             <ListItemText primary={label} />
                         </ListItem>

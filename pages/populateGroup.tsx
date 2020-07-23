@@ -12,7 +12,7 @@ import { Professor } from '../src/ts/interfaces/users.interface';
 import AddPersons from '../components/addPersons';
 import { Title } from '../lib/styles/adminHome';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import { StyledItem, StyledTicket, StyledLecturer, StyledGrid } from '../lib/styles/populategroup';
+import { StyledItem, StyledTicket, StyledLecturer, StyledGrid, Sticky } from '../lib/styles/populategroup';
 import axios from 'axios';
 import { NextPage } from 'next';
 import Router from 'next/router';
@@ -20,6 +20,12 @@ import Router from 'next/router';
 
 const PopulateGroup: NextPage =
     ({ group, groupStudents, groupLecturer, students, professors }: any): JSX.Element => {
+
+        if (process.browser) {
+            const token = localStorage.getItem('token');
+            const role = localStorage.getItem('role');
+            if (!token && Router || role !== 'admin') { Router.push('/login') };
+        }
 
         const classes = useStyles();
 
@@ -150,7 +156,9 @@ const PopulateGroup: NextPage =
                     professors={professors}
                 />
                 <DrawerBox>
-                    <Drawer />
+                    <Sticky>
+                        <Drawer type='admin' />
+                    </Sticky>
                 </DrawerBox>
                 <StyledPaper elevation={3}>
                     <Title>
@@ -208,7 +216,7 @@ PopulateGroup.getInitialProps = async ({ query, res }: any) => {
     const {
         allProfessors: { professors },
         allStudents: { students },
-        getGroup: { group, groupStudents, groupLecturer }
+        getGroup: { group, groupStudents }
     } = await axios.get('http://localhost:3000/api/groups', {
         params: {
             _id
@@ -226,15 +234,6 @@ PopulateGroup.getInitialProps = async ({ query, res }: any) => {
             console.log(err)
             return res.redirect('/addGroups');
         });
-    // await console.log(
-    //     group,
-    //     groupStudents,
-    //     groupLecturer,
-    //     professors,
-    //     group.lecturer,
-    //     professors.find(({ _id }: Professor) =>
-    //         _id === group.lecturer)
-    // )
 
     return {
         group,

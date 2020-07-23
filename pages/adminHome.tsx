@@ -4,19 +4,30 @@ import FullWidthTabs from '../components/adminTabs';
 import { StyledPaper, TemporaryDrawerWrapper, Title } from '../lib/styles/adminHome';
 import axios from 'axios';
 import { NextPage } from 'next';
+import Router from 'next/router';
 
-const AdminHome: NextPage = ({ professors }: any): JSX.Element =>
-    <StyledPaper elevation={3}>
-        <TemporaryDrawerWrapper>
-            <TemporaryDrawer />
-        </TemporaryDrawerWrapper>
-        <Title width={1}>
-            Vaši predavači
+const AdminHome: NextPage = ({ professors }: any): JSX.Element => {
+
+    if (process.browser) {
+        const token = localStorage.getItem('token');
+        const role = localStorage.getItem('role');
+        if (!token && Router || role !== 'admin') { Router.push('/login') };
+    }
+
+    return (
+        <StyledPaper elevation={3}>
+            <TemporaryDrawerWrapper>
+                <TemporaryDrawer type='admin' />
+            </TemporaryDrawerWrapper>
+            <Title width={1}>
+                Vaši predavači
         </Title>
-        <FullWidthTabs
-            professors={professors}
-        />
-    </StyledPaper>;
+            <FullWidthTabs
+                professors={professors}
+            />
+        </StyledPaper>
+    )
+};
 
 AdminHome.getInitialProps = async ({ res }: any) => {
 

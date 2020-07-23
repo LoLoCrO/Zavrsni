@@ -4,6 +4,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {
     useStyles,
     DrawerBox,
+    Sticky,
     StyledPaper,
     StyledEditIcon,
     StyledCancelPresentationIcon,
@@ -19,8 +20,15 @@ import { Professor } from '../src/ts/interfaces/users.interface';
 import { professors } from '../lib/mocks/professors';
 import { NextPage } from 'next';
 import axios from 'axios';
+import Router from 'next/router';
 
 const ProfessorProfle: NextPage = ({ prof }: any): JSX.Element => {
+
+    if (process.browser) {
+        const token = localStorage.getItem('token');
+        const role = localStorage.getItem('role');
+        if (!token && Router || role !== 'admin') { Router.push('/login') };
+    }
 
     const classes = useStyles()
 
@@ -46,7 +54,9 @@ const ProfessorProfle: NextPage = ({ prof }: any): JSX.Element => {
     return (
         <React.Fragment>
             <DrawerBox>
-                <Drawer />
+                <Sticky>
+                    <Drawer type='admin' />
+                </Sticky>
             </DrawerBox>
             <StyledPaper elevation={3}>
                 {

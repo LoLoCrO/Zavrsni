@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import next from "next";
 import parseArgs from "minimist";
 import bodyParser from "body-parser";
-import { routesType, adminRoutes, studentRoutes } from "./routes";
+import { routesType, adminRoutes, studentRoutes, publicPaths } from "./routes";
 import mongoose from "mongoose";
 import router from "./api";
 import { connectionString, userRoles } from "./config/serverSettings";
@@ -51,7 +51,7 @@ app.prepare().then(() => {
   server.use("/api", router);
 
   adminRoutes.forEach(({ path, pageToRender }: routesType) =>
-    server.get(
+    server.use(
       path,
       authenticateToken,
       authorizeUser(userRoles.admin),
@@ -60,13 +60,15 @@ app.prepare().then(() => {
   );
 
   studentRoutes.forEach(({ path, pageToRender }: routesType) =>
-    server.get(
+    server.use(
       path,
       authenticateToken,
       authorizeUser(userRoles.student),
       render(pageToRender)
     )
   );
+
+  publicPaths.forEach((path: string) => server.get(path));
 
   server.get("*", (req, res) => handle(req, res));
 

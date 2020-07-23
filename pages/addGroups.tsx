@@ -1,5 +1,5 @@
 import React from 'react';
-import { DrawerBox, StyledPaper, useStyles } from '../lib/styles/addGroups';
+import { DrawerBox, StyledPaper, useStyles, Sticky } from '../lib/styles/addGroups';
 import Drawer from '../components/drawer';
 import { Grid, Paper } from '@material-ui/core';
 import GroupModal from '../components/groupModal';
@@ -8,8 +8,16 @@ import { StudentGroup } from '../src/ts/interfaces/studentGroup.interface';
 import AddGroupTabs from '../components/addGroupTabs';
 import axios from 'axios';
 import { NextPage } from 'next';
+import Router from 'next/router';
 
 const AddGroups: NextPage = ({ fetchedGroups }: any): JSX.Element => {
+
+    if (process.browser) {
+        const token = localStorage.getItem('token');
+        const role = localStorage.getItem('role');
+        if (!token && Router || role !== 'admin') { Router.push('/login') };
+    }
+
     const classes = useStyles();
 
     const [open, setOpen] = React.useState<boolean>(false);
@@ -121,7 +129,9 @@ const AddGroups: NextPage = ({ fetchedGroups }: any): JSX.Element => {
                 addOrEditGroup={addOrEditGroup}
             />
             <DrawerBox>
-                <Drawer />
+                <Sticky>
+                    <Drawer type='admin' />
+                </Sticky>
             </DrawerBox>
             <StyledPaper elevation={3}>
                 <AddGroupTabs

@@ -162,7 +162,7 @@ const Groups = (router: Router) => {
           })
           .exec()
           .then((docs: any) => {
-            console.log("Lecturer", doc.group.lecturer, docs);
+            console.log("Lecturer", doc?.group?.lecturer, docs);
             return { success: true, ...doc, lecturer: docs };
           });
         return groupWithLecturer;

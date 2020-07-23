@@ -13,8 +13,8 @@ export const useStyles = makeStyles((theme: Theme) =>
       color: theme.palette.text.secondary,
     },
     addGroupButton: {
-      float: 'right',
-      marginRight: '1.5rem',
+      float: "right",
+      marginRight: "1.5rem",
       marginBottom: "2rem",
     },
   })
@@ -34,7 +34,7 @@ export const StyledPaper = styled(Paper)`
 
 export const DrawerBox = styled.div`
   && {
-    position: absolute;
+    position: fixed;
     left: 0;
     display: flex;
     justify-content: center;
@@ -44,5 +44,13 @@ export const DrawerBox = styled.div`
     padding-bottom: 2.5rem;
     box-shadow: 1px 1px 1px #ececec;
     border-radius: 0 0 10px 0;
+  }
+`;
+
+export const Sticky = styled.div`
+  && {
+    display: flex;
+    justify-content: center;
+    position: fixed;
   }
 `;

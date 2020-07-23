@@ -32,3 +32,11 @@ export const StyledLecturer = styled.div`
     justify-content: center;
   }
 `;
+
+export const Sticky = styled.div`
+  && {
+    display: flex;
+    justify-content: center;
+    position: fixed;
+  }
+`;

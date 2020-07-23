@@ -52,7 +52,8 @@ export const Wrapper = styled.div`
 
 export const DrawerBox = styled.div`
   && {
-    position: absolute;
+    border-radius: 0 0 5px 0;
+    position: fixed;
     left: 0;
     display: flex;
     justify-content: center;
@@ -61,6 +62,14 @@ export const DrawerBox = styled.div`
     padding-top: 1rem;
     padding-bottom: 2.5rem;
     box-shadow: 1px 1px 1px #ececec;
+  }
+`;
+
+export const Sticky = styled.div`
+  && {
+    display: flex;
+    justify-content: center;
+    position: fixed;
   }
 `;
 

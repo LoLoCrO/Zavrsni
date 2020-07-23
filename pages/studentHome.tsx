@@ -2,11 +2,20 @@ import React from 'react';
 import Link from 'next/link';
 import LecturerTicket from '../components/lecturerTicket';
 import { StyledPaper, Title, StyledContainer, Ticket } from '../lib/styles/studentHome';
-import axios from 'axios';
-import { NextPage } from 'next';
 import { Typography } from '@material-ui/core';
+import { DrawerBox, Sticky } from '../lib/styles/professorProfile';
+import Drawer from '../components/drawer';
+import Router from 'next/router';
+import { NextPage } from 'next';
+import axios from 'axios';
 
 const StudentHome: NextPage = ({ _id, lecturers, studentMarks }: any) => {
+
+    if (process.browser) {
+        const token = localStorage.getItem('token');
+        const role = localStorage.getItem('role');
+        if (!token && Router || role !== 'student') { Router.push('/login') };
+    }
 
     const list: any[] = lecturers;
 
@@ -42,21 +51,34 @@ const StudentHome: NextPage = ({ _id, lecturers, studentMarks }: any) => {
 
 
     return (
-        <StyledPaper elevation={3}>
-            <Title width={1}>
-                Vaši predavači
-            </Title>
-            <StyledContainer>
-                {displayLecturers()}
-            </StyledContainer>
-        </StyledPaper>
+        <React.Fragment>
+            <DrawerBox>
+                <Sticky>
+                    <Drawer type='student' />
+                </Sticky>
+            </DrawerBox>
+            <StyledPaper elevation={3}>
+                <Title width={1}>
+                    Vaši predavači
+                </Title>
+                <StyledContainer>
+                    {displayLecturers()}
+                </StyledContainer>
+            </StyledPaper>
+        </React.Fragment>
     );
 }
 
 
-StudentHome.getInitialProps = async ({ query: { _id } }: any) => {
+StudentHome.getInitialProps = async ({ query: { _id }, res }: any) => {
 
-    console.log("StudentHome query", _id);
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        if (Router) {
+            return Router.push('/login');
+        } else res.redirect('/login');
+    }
 
     const route = 'http://localhost:3000/api/students/lecturers';
 
@@ -80,14 +102,6 @@ StudentHome.getInitialProps = async ({ query: { _id } }: any) => {
         return Object.assign({}, lect, { groupName: mark.groupName })
     });
 
-    // {
-    //     console.log("element", element, element.marked, `Condition element.marked ${element.marked}`);
-    //     if (element.marked) {
-    //         return null;
-    //     } else { return element }
-    // }
-
-    console.log('studentMarks', updatedMarks)
     return {
         _id,
         studentMarks: updatedMarks,
